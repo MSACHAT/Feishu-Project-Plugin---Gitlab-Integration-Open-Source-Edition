@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Collapse, Typography, Table, Toast, Popover, Spin } from '@douyinfe/semi-ui';
+import {
+  Collapse,
+  Typography,
+  Table,
+  Toast,
+  Popover,
+  Spin,
+} from '@douyinfe/semi-ui';
 import { getBindings, deleteBindings } from '../../api/service';
 import './index.less';
 import { IconTreeTriangleRight } from '@douyinfe/semi-icons';
@@ -15,7 +22,7 @@ enum ITabType {
 
 const { Text } = Typography;
 
-const formateTime = time => {
+const formateTime = (time) => {
   const date = new Date(time * 1000);
   const y = date.getFullYear();
   const m = date.getMonth() + 1;
@@ -24,26 +31,26 @@ const formateTime = time => {
   return `${y}-${m}-${d}`;
 };
 
-const renderUsers = users => {
+const renderUsers = (users) => {
   if (users && !Array.isArray(users)) users = [users];
-  const userEmails = users?.map(user => user.email) || [];
+  const userEmails = users?.map((user) => user.email) || [];
   if (userEmails.length > 1) {
     return (
-      <div className="user-cell">
-        <Text ellipsis={{ showTooltip: true }} className="email">
+      <div className='user-cell'>
+        <Text ellipsis={{ showTooltip: true }} className='email'>
           {userEmails[0]}
         </Text>
         <Popover
-          position="top"
+          position='top'
           content={
             <div style={{ padding: '12px' }}>
-              {userEmails.map(email => (
+              {userEmails.map((email) => (
                 <div>{`${email}`}</div>
               ))}
             </div>
           }
         >
-          <span className="more">{`+${userEmails.length}`}</span>
+          <span className='more'>{`+${userEmails.length}`}</span>
         </Popover>
       </div>
     );
@@ -57,12 +64,14 @@ const renderTitle = (type, text, record, maxToolTipWidth?) => {
   if (url || repository?.url) {
     const href = {
       [ITabType.MR]: url || repository?.url,
-      [ITabType.COMMIT]: `${repository?.url || url}/commit/${record?.commit_id}`,
+      [ITabType.COMMIT]: `${
+        repository?.url || url
+      }/commit/${record?.commit_id}`,
       [ITabType.BRANCH]: `${repository?.url || url}/tree/${record?.name}?`,
     };
     return (
       <BaseCell
-        className="title-cell link-cell"
+        className='title-cell link-cell'
         link={{ href: href[type], target: '_blank' }}
         maxToolTipWidth={maxToolTipWidth}
       >
@@ -71,14 +80,14 @@ const renderTitle = (type, text, record, maxToolTipWidth?) => {
     );
   } else {
     return (
-      <BaseCell className="title-cell" maxToolTipWidth={maxToolTipWidth}>
+      <BaseCell className='title-cell' maxToolTipWidth={maxToolTipWidth}>
         {text}
       </BaseCell>
     );
   }
 };
 
-const BaseCell = props => {
+const BaseCell = (props) => {
   const { children, maxToolTipWidth, ...res } = props;
   return (
     <Text
@@ -122,15 +131,15 @@ export default hot(() => {
   const [showTip, setShowTip] = useState(false);
 
   const deleteBinding = useCallback(
-    id => {
+    (id) => {
       deleteBindings({
         project_key,
         workitem_id,
         id,
       })
-        .then(res => {
+        .then((res) => {
           getBindings({ project_key, workitem_id })
-            .then(res => {
+            .then((res) => {
               if (res.data) {
                 setBindings(res.data);
               }
@@ -139,18 +148,18 @@ export default hot(() => {
               setLoading(false);
             });
         })
-        .catch(e => {
+        .catch((e) => {
           setLoading(false);
           Toast.error(e.message || '请求失败，请稍后重试');
         });
     },
-    [project_key, workitem_id],
+    [project_key, workitem_id]
   );
 
   useEffect(() => {
     setLoading(true);
     getBindings({ project_key, workitem_id })
-      .then(res => {
+      .then((res) => {
         if (res.data) {
           setBindings(res.data);
         }
@@ -164,7 +173,9 @@ export default hot(() => {
   useEffect(() => {
     if (inited) {
       try {
-        const info = JSON.parse(window?.parent?.localStorage?.getItem(APP_KEY) || '{}');
+        const info = JSON.parse(
+          window?.parent?.localStorage?.getItem(APP_KEY) || '{}'
+        );
         if (!info.visited_tab) {
           setShowTip(true);
         }
@@ -189,7 +200,7 @@ export default hot(() => {
       title: '仓库',
       dataIndex: 'repository',
       width: 84,
-      render: val => <BaseCell>{val?.path_with_namespace}</BaseCell>,
+      render: (val) => <BaseCell>{val?.path_with_namespace}</BaseCell>,
     },
     {
       title: '原分支',
@@ -227,7 +238,7 @@ export default hot(() => {
       // fixed: bindings['merge_request']?.length > 0 ? 'right' : undefined,
       render: (val, record) => (
         <Typography.Text
-          className="action"
+          className='action'
           link={val}
           disabled={!val}
           onClick={() => val && deleteBinding(record.id)}
@@ -256,13 +267,13 @@ export default hot(() => {
       title: '仓库',
       dataIndex: 'repository',
       width: 131,
-      render: val => <BaseCell>{val?.path_with_namespace}</BaseCell>,
+      render: (val) => <BaseCell>{val?.path_with_namespace}</BaseCell>,
     },
     {
       title: '分支',
       dataIndex: 'branch',
       width: 120,
-      render: val => <BaseCell>{val}</BaseCell>,
+      render: (val) => <BaseCell>{val}</BaseCell>,
     },
     {
       title: '作者',
@@ -282,7 +293,7 @@ export default hot(() => {
       // fixed: bindings.commit?.length > 0 ? 'right' : false,
       render: (val, record) => (
         <Typography.Text
-          className="action"
+          className='action'
           link={val}
           disabled={!val}
           onClick={() => val && deleteBinding(record.id)}
@@ -298,13 +309,16 @@ export default hot(() => {
       title: '分支信息',
       dataIndex: 'name',
       width: 343,
-      render: (text, record, index) => renderTitle(ITabType.BRANCH, text, record),
+      render: (text, record, index) =>
+        renderTitle(ITabType.BRANCH, text, record),
     },
     {
       title: '代码仓库',
       dataIndex: 'repository',
       width: 309,
-      render: (text, record, index) => <BaseCell>{text?.path_with_namespace}</BaseCell>,
+      render: (text, record, index) => (
+        <BaseCell>{text?.path_with_namespace}</BaseCell>
+      ),
     },
     {
       title: '更新时间',
@@ -318,7 +332,7 @@ export default hot(() => {
       // fixed: bindings.branch?.length > 0 ? 'right' : false,
       render: (val, record) => (
         <Typography.Text
-          className="action"
+          className='action'
           link={val}
           disabled={!val}
           onClick={() => {
@@ -333,112 +347,19 @@ export default hot(() => {
 
   const defaultActiveKey = useMemo(() => {
     const keys: string[] = [];
-    Object.keys(bindings).forEach(key => {
+    Object.keys(bindings).forEach((key) => {
       if (bindings[key]?.length > 0) keys.push(key);
     });
     return keys;
   }, [bindings]);
 
-  // const TipContent = (
-  //   <div className='meego-plugin-gitlab-tip-popver'>
-  //     <div className='meego-plugin-gitlab-tip-popver-title'>
-  //       {bruteTranslate('插件升级，使用方式更新')} 📖
-  //     </div>
-  //     <div className='meego-plugin-gitlab-tip-popver-info'>
-  //       {bruteTranslate(
-  //         `使用 {command} 一键复制ID，在 {action} 中使用该ID可关联/流转工作项，详情参考 {helpLink}`,
-  //         {
-  //           command: (
-  //             <span className='meego-plugin-gitlab-tip-popver-info-command'>
-  //               {isMac()
-  //                 ? bruteTranslate('⌘+⇧+C')
-  //                 : bruteTranslate('Ctrl + Shift + c')}
-  //             </span>
-  //           ),
-  //           action: (
-  //             <span className='meego-plugin-gitlab-tip-popver-info-command'>
-  //               {bruteTranslate('commit/branch/MR')}
-  //             </span>
-  //           ),
-  //           action2: (
-  //             <span className='meego-plugin-gitlab-tip-popver-info-command'>
-  //               {bruteTranslate('resolve F-####')}
-  //             </span>
-  //           ),
-  //           helpLink: (
-  //             <Typography.Text
-  //               link={{
-  //                 href: isKa()
-  //                   ? 'https://project.feishu.cn/kahelpcenter/articles/531175268886'
-  //                   : 'https://bytedance.feishu.cn/docx/doxcnMmY76oEeWg8Rw8NmYCAsbc',
-  //                 target: '_blank',
-  //               }}
-  //               onClick={() => {
-  //                 logEvent('detail_main_page_tab_click', {
-  //                   click: 'check_help',
-  //                 });
-  //               }}
-  //             >
-  //               {bruteTranslate('帮助文档')}
-  //             </Typography.Text>
-  //           ),
-  //         }
-  //       )}
-  //     </div>
-  //     <div className='meego-plugin-gitlab-tip-popver-footer'>
-  //       <Button
-  //         theme='light'
-  //         type='primary'
-  //         onClick={() => {
-  //           window?.parent?.localStorage?.setItem(
-  //             APP_KEY,
-  //             JSON.stringify({ visited_tab: true })
-  //           );
-  //           setShowTip(false);
-  //         }}
-  //       >
-  //         {bruteTranslate('我知道了')}
-  //       </Button>
-  //     </div>
-  //   </div>
-  // );
-
-  // const RenderTip = () => {
-  //   return (
-  //     <Popover
-  //       content={TipContent}
-  //       position='topLeft'
-  //       visible={showTip}
-  //       trigger='custom'
-  //     >
-  //       <div className='meego-plugin-gitlab-tip' />
-  //     </Popover>
-  //   );
-  // };
-
   return (
-    <div className="meego-plugin-gitlab-tab-container">
-      {/* <div className='meego-plugin-gitlab-help-link'>
-        <Typography.Text
-          link={{
-            href: isKa()
-              ? 'https://project.feishu.cn/kahelpcenter/articles/531175268886'
-              : 'https://bytedance.feishu.cn/docx/doxcnMmY76oEeWg8Rw8NmYCAsbc',
-            target: '_blank',
-          }}
-          onClick={() => {
-            logEvent('detail_main_page_tab_click', { click: 'check_help' });
-          }}
-        >
-          <IconLink size={'extra-small'} />
-          {bruteTranslate('查看帮助文档')}
-        </Typography.Text>
-      </div> */}
+    <div className='meego-plugin-gitlab-tab-container'>
       <Spin spinning={loading}>
-        <div className="meego-plugin-gitlab-tab">
+        <div className='meego-plugin-gitlab-tab'>
           {inited && (
             <Collapse
-              expandIconPosition="left"
+              expandIconPosition='left'
               defaultActiveKey={defaultActiveKey}
               expandIcon={<IconTreeTriangleRight size={'extra-small'} />}
               collapseIcon={
@@ -454,7 +375,7 @@ export default hot(() => {
                     ? ` · ${bindings['merge_request'].length}`
                     : ''
                 } `}
-                itemKey="merge_request"
+                itemKey='merge_request'
               >
                 <Table
                   bordered
@@ -469,9 +390,11 @@ export default hot(() => {
               </Collapse.Panel>
               <Collapse.Panel
                 header={`Commit${
-                  bindings?.commit?.length > 0 ? ` · ${bindings?.commit.length}` : ''
+                  bindings?.commit?.length > 0
+                    ? ` · ${bindings?.commit.length}`
+                    : ''
                 } `}
-                itemKey="commit"
+                itemKey='commit'
               >
                 <Table
                   bordered
@@ -486,9 +409,11 @@ export default hot(() => {
               </Collapse.Panel>
               <Collapse.Panel
                 header={`Branch${
-                  bindings?.branch?.length > 0 ? ` · ${bindings.branch.length}` : ''
+                  bindings?.branch?.length > 0
+                    ? ` · ${bindings.branch.length}`
+                    : ''
                 } `}
-                itemKey="branch"
+                itemKey='branch'
               >
                 <Table
                   bordered
