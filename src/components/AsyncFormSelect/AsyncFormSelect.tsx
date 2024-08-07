@@ -21,7 +21,8 @@ const AsyncFormSelect: FC<AsyncFormSelectProps> = (props) => {
     setOptions(undefined);
     fetchData()
       .then(setOptions)
-      .finally(() => {
+        //由于.finally()失效了，这里用.then()代替
+      .then(() => {
         setLoading(false);
       });
   }, [fetchData]);

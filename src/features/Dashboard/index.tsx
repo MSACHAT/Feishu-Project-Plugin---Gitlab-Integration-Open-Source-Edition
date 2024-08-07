@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { Collapse, Typography, Table, Toast, Popover, Spin, Icon, Button } from '@douyinfe/semi-ui';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Collapse, Typography, Table, Toast, Popover, Spin } from '@douyinfe/semi-ui';
 import { getBindings, deleteBindings } from '../../api/service';
 import './index.less';
-import { IconLink, IconTreeTriangleRight } from '@douyinfe/semi-icons';
+import { IconTreeTriangleRight } from '@douyinfe/semi-icons';
 
 import { APP_KEY } from '../../constants';
 import useSdkContext from '../../hooks/useSdkContext';
-import { hot } from 'react-hot-loader/root';
 
 enum ITabType {
   MR = 1,

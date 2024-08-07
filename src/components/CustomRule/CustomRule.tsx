@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Button, Modal, Form, Toast, Popconfirm } from '@douyinfe/semi-ui';
 import { isEmpty } from 'lodash';
 import { getCommonSetting, commonSetting } from '../../api/service';
-import useSdkContext from '../../hooks/useSdkContext';
+import useSdkContext from "../../hooks/useSdkContext";
 
 const FormInput = Form.Input;
 const CustomRule = () => {
-  const { mainSpace } = useSdkContext() || {};
-  const spaceId = mainSpace?.id ?? '';
+  const context = useSdkContext()
+  const mainSpace  = context?.mainSpace;
+  const spaceId = mainSpace?.name ?? '';
 
   const [visible, setVisible] = useState(false);
   const [formApi, setFormApi] = useState<any>(null);

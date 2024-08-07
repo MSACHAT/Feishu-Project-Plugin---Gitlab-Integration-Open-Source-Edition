@@ -60,7 +60,8 @@ function ConfigList<T extends Record<string, any>>(
         setTemplateList((rules ?? []).map((item) => item.template.id));
         setList(rules ?? []);
       })
-      .finally(() => {
+        //由于.finally()失效了，这里用.then()代替
+      .then(() => {
         setLoading(false);
       });
   }, [fetchData, forceUpdataFlag]);

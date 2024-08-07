@@ -4,7 +4,7 @@
   "pluginSecret": "e05ef0985e1f95839ba424be7e40a4a38e616926d2c5ecd0ed464231aec3efd02c30c07b67346a55c21759bb7f197e0a",
   "resources": [
     {
-      "id": "resource-key",
+      "id": "0.0.1",
       "entry": "./src/features/demo/index.tsx"
     }
   ]
