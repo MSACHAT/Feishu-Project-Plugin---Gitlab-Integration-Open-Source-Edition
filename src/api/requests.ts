@@ -1,5 +1,6 @@
 import { Toast } from "@douyinfe/semi-ui";
 import axios from "axios";
+import { APP_KEY, requestHost } from "../constants";
 
 
 const toastCache = {};
