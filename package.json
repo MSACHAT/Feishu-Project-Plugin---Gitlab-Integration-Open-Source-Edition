@@ -13,9 +13,10 @@
     ]
   },
   "dependencies": {
+    "@douyinfe/semi-ui": "^2.63.1",
+    "@lark-project/js-sdk": "alpha",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@lark-project/js-sdk": "alpha"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

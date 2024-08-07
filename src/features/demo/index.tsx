@@ -9,5 +9,5 @@ const root = createRoot(container);
 root.render(
   <div>
     <h1 className="title">Demo Feature</h1>
-  </div>,
+  </div>
 );
