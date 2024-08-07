@@ -20,6 +20,7 @@ enum ITabType {
   BRANCH,
 }
 
+
 const { Text } = Typography;
 
 const formateTime = (time) => {
@@ -88,7 +89,7 @@ const renderTitle = (type, text, record, maxToolTipWidth?) => {
 };
 
 const BaseCell = (props) => {
-  const { children, maxToolTipWidth, ...res } = props;
+  const { children, maxToolTipWidth } = props;
   return (
     <Text
       ellipsis={{
@@ -121,13 +122,14 @@ const getWorkItemIdFormUrl = () => {
   return '';
 };
 
-export default hot(() => {
+export const Tab=() => {
   const [bindings, setBindings] = useState<any>([]);
   const { mainSpace } = useSdkContext() || {};
   const project_key = mainSpace?.id ?? '';
   const workitem_id = getWorkItemIdFormUrl();
   const [loading, setLoading] = useState(false);
   const [inited, setInited] = useState(false);
+  //@ts-ignore
   const [showTip, setShowTip] = useState(false);
 
   const deleteBinding = useCallback(
@@ -144,7 +146,8 @@ export default hot(() => {
                 setBindings(res.data);
               }
             })
-            .finally(() => {
+              //.finally()改成.then()
+            .then(() => {
               setLoading(false);
             });
         })
@@ -164,7 +167,8 @@ export default hot(() => {
           setBindings(res.data);
         }
       })
-      .finally(() => {
+        //.finally()改成.then()
+      .then(() => {
         setInited(true);
         setLoading(false);
       });
@@ -183,7 +187,7 @@ export default hot(() => {
     }
   }, [inited]);
 
-  const MRColumns = [
+  const MRColumns:{title:string,dataIndex:string,width:number,render:any}[] = [
     {
       title: '标题',
       dataIndex: 'title',
@@ -221,7 +225,8 @@ export default hot(() => {
       render: (val, record, index) => renderUsers(val),
     },
     {
-      title: bruteTranslate('reviewer'),
+      // title: bruteTranslate('reviewer'),
+      title: 'reviewer',
       dataIndex: 'reviewers',
       width: 139,
       render: (val, record, index) => renderUsers(val),
@@ -233,6 +238,7 @@ export default hot(() => {
       render: (val, record, index) => <BaseCell>{formateTime(val)}</BaseCell>,
     },
     {
+      title:"",
       width: 65,
       dataIndex: 'deletable',
       // fixed: bindings['merge_request']?.length > 0 ? 'right' : undefined,
@@ -251,7 +257,8 @@ export default hot(() => {
 
   const RenderCommitTable = [
     {
-      title: bruteTranslate('ID'),
+      // title: bruteTranslate('ID'),
+      title:"ID",
       dataIndex: 'commit_id',
       width: 155,
       render: (text, record, index) =>
@@ -288,6 +295,7 @@ export default hot(() => {
       render: (val, record, index) => <BaseCell>{formateTime(val)}</BaseCell>,
     },
     {
+      title:"",
       width: 65,
       dataIndex: 'deletable',
       // fixed: bindings.commit?.length > 0 ? 'right' : false,
@@ -433,8 +441,4 @@ export default hot(() => {
       {/* <RenderTip></RenderTip> */}
     </div>
   );
-});
-
-function bruteTranslate(arg0: string) {
-  throw new Error('Function not implemented.');
-}
+};
