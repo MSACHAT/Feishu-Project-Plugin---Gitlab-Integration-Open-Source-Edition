@@ -13,6 +13,7 @@ import { IconTreeTriangleRight } from '@douyinfe/semi-icons';
 
 import { APP_KEY } from '../../constants';
 import useSdkContext from '../../hooks/useSdkContext';
+import { createRoot } from 'react-dom/client';
 
 enum ITabType {
   MR = 1,
@@ -121,7 +122,7 @@ const getWorkItemIdFormUrl = () => {
   return '';
 };
 
-export default hot(() => {
+export const Dashboard = () => {
   const [bindings, setBindings] = useState<any>([]);
   const { mainSpace } = useSdkContext() || {};
   const project_key = mainSpace?.id ?? '';
@@ -131,44 +132,45 @@ export default hot(() => {
   const [showTip, setShowTip] = useState(false);
 
   const deleteBinding = useCallback(
-    (id) => {
-      deleteBindings({
-        project_key,
-        workitem_id,
-        id,
-      })
-        .then((res) => {
-          getBindings({ project_key, workitem_id })
-            .then((res) => {
-              if (res.data) {
-                setBindings(res.data);
-              }
-            })
-            .finally(() => {
-              setLoading(false);
-            });
-        })
-        .catch((e) => {
-          setLoading(false);
-          Toast.error(e.message || '请求失败，请稍后重试');
+    async function (id) {
+      setLoading(true); // 设置loading状态为true
+      try {
+        await deleteBindings({
+          project_key,
+          workitem_id,
+          id,
         });
+        const res = await getBindings({ project_key, workitem_id });
+        if (res.data) {
+          setBindings(res.data);
+        }
+      } catch (e) {
+        Toast.error(e.message || '请求失败，请稍后重试');
+      } finally {
+        setLoading(false); // 无论成功还是失败，都设置loading状态为false
+      }
     },
     [project_key, workitem_id]
   );
 
   useEffect(() => {
-    setLoading(true);
-    getBindings({ project_key, workitem_id })
-      .then((res) => {
+    async function fetchBindings() {
+      setLoading(true); // 设置loading状态为true
+      try {
+        const res = await getBindings({ project_key, workitem_id });
         if (res.data) {
           setBindings(res.data);
         }
-      })
-      .finally(() => {
+      } catch (e) {
+        console.error(e);
+      } finally {
         setInited(true);
-        setLoading(false);
-      });
-  }, []);
+        setLoading(false); // 无论成功还是失败，都设置loading状态为false
+      }
+    }
+
+    fetchBindings();
+  }, [project_key, workitem_id]);
 
   useEffect(() => {
     if (inited) {
@@ -221,7 +223,7 @@ export default hot(() => {
       render: (val, record, index) => renderUsers(val),
     },
     {
-      title: bruteTranslate('reviewer'),
+      title: 'reviewer',
       dataIndex: 'reviewers',
       width: 139,
       render: (val, record, index) => renderUsers(val),
@@ -251,7 +253,7 @@ export default hot(() => {
 
   const RenderCommitTable = [
     {
-      title: bruteTranslate('ID'),
+      title: 'ID',
       dataIndex: 'commit_id',
       width: 155,
       render: (text, record, index) =>
@@ -433,8 +435,16 @@ export default hot(() => {
       {/* <RenderTip></RenderTip> */}
     </div>
   );
-});
+};
 
-function bruteTranslate(arg0: string) {
-  throw new Error('Function not implemented.');
-}
+const container = document.createElement('div');
+container.id = 'app';
+document.body.appendChild(container);
+
+const root = createRoot(container);
+
+root.render(
+  <div>
+    <Dashboard />
+  </div>
+);
