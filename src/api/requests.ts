@@ -1,7 +1,9 @@
 import { Toast } from "@douyinfe/semi-ui";
 import axios from "axios";
 import { APP_KEY, requestHost } from "../constants";
+import { isLogin } from "../accessControl";
 
+const sdk = window.JSSDK;
 
 const toastCache = {};
 const toastCallBack = (e: Error) => {
@@ -23,11 +25,12 @@ const request = axios;
 const baseUrl = requestHost;
 
 request.interceptors.request.use(
+
   async function (config) {
     // 在请求发送之前做一些处理
     // 添加请求头信息
-
-    const token = await window.JSSDK.storage.getItem(`${APP_KEY}_token`);
+    await isLogin();
+    const token = await sdk.storage.getItem(`${APP_KEY}_token`);
     if (config.url?.startsWith('/')) {
       config.url = baseUrl + config.url;
     }
@@ -52,8 +55,8 @@ request.interceptors.response.use(
         return res;
       }
       if (res.code === 1000052203) {
-        await window.JSSDK.storage.removeItem(`${APP_KEY}_token`);
-        await window.JSSDK.storage.removeItem(`${APP_KEY}_expire_time`);
+        await sdk.storage.removeItem(`${APP_KEY}_token`);
+        await sdk.storage.removeItem(`${APP_KEY}_expire_time`);
         return res;
       }
       // 根据返回的业务错误码进行错误处理
