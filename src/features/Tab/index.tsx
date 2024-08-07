@@ -13,7 +13,6 @@ import { IconTreeTriangleRight } from '@douyinfe/semi-icons';
 
 import { APP_KEY } from '../../constants';
 import useSdkContext from '../../hooks/useSdkContext';
-import { createRoot } from 'react-dom/client';
 
 enum ITabType {
   MR = 1,
@@ -89,7 +88,7 @@ const renderTitle = (type, text, record, maxToolTipWidth?) => {
 };
 
 const BaseCell = (props) => {
-  const { children, maxToolTipWidth, ...res } = props;
+  const { children, maxToolTipWidth } = props;
   return (
     <Text
       ellipsis={{
@@ -122,55 +121,57 @@ const getWorkItemIdFormUrl = () => {
   return '';
 };
 
-export const Dashboard = () => {
+export const Tab = () => {
   const [bindings, setBindings] = useState<any>([]);
   const { mainSpace } = useSdkContext() || {};
   const project_key = mainSpace?.id ?? '';
   const workitem_id = getWorkItemIdFormUrl();
   const [loading, setLoading] = useState(false);
   const [inited, setInited] = useState(false);
+  //@ts-ignore
   const [showTip, setShowTip] = useState(false);
 
   const deleteBinding = useCallback(
-    async function (id) {
-      setLoading(true); // 设置loading状态为true
-      try {
-        await deleteBindings({
-          project_key,
-          workitem_id,
-          id,
+    (id) => {
+      deleteBindings({
+        project_key,
+        workitem_id,
+        id,
+      })
+        .then((res) => {
+          getBindings({ project_key, workitem_id })
+            .then((res) => {
+              if (res.data) {
+                setBindings(res.data);
+              }
+            })
+            //.finally()改成.then()
+            .then(() => {
+              setLoading(false);
+            });
+        })
+        .catch((e) => {
+          setLoading(false);
+          Toast.error(e.message || '请求失败，请稍后重试');
         });
-        const res = await getBindings({ project_key, workitem_id });
-        if (res.data) {
-          setBindings(res.data);
-        }
-      } catch (e) {
-        Toast.error(e.message || '请求失败，请稍后重试');
-      } finally {
-        setLoading(false); // 无论成功还是失败，都设置loading状态为false
-      }
     },
     [project_key, workitem_id]
   );
 
   useEffect(() => {
-    async function fetchBindings() {
-      setLoading(true); // 设置loading状态为true
-      try {
-        const res = await getBindings({ project_key, workitem_id });
+    setLoading(true);
+    getBindings({ project_key, workitem_id })
+      .then((res) => {
         if (res.data) {
           setBindings(res.data);
         }
-      } catch (e) {
-        console.error(e);
-      } finally {
+      })
+      //.finally()改成.then()
+      .then(() => {
         setInited(true);
-        setLoading(false); // 无论成功还是失败，都设置loading状态为false
-      }
-    }
-
-    fetchBindings();
-  }, [project_key, workitem_id]);
+        setLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     if (inited) {
@@ -185,7 +186,12 @@ export const Dashboard = () => {
     }
   }, [inited]);
 
-  const MRColumns = [
+  const MRColumns: {
+    title: string;
+    dataIndex: string;
+    width: number;
+    render: any;
+  }[] = [
     {
       title: '标题',
       dataIndex: 'title',
@@ -223,6 +229,7 @@ export const Dashboard = () => {
       render: (val, record, index) => renderUsers(val),
     },
     {
+      // title: bruteTranslate('reviewer'),
       title: 'reviewer',
       dataIndex: 'reviewers',
       width: 139,
@@ -235,6 +242,7 @@ export const Dashboard = () => {
       render: (val, record, index) => <BaseCell>{formateTime(val)}</BaseCell>,
     },
     {
+      title: '',
       width: 65,
       dataIndex: 'deletable',
       // fixed: bindings['merge_request']?.length > 0 ? 'right' : undefined,
@@ -253,6 +261,7 @@ export const Dashboard = () => {
 
   const RenderCommitTable = [
     {
+      // title: bruteTranslate('ID'),
       title: 'ID',
       dataIndex: 'commit_id',
       width: 155,
@@ -290,6 +299,7 @@ export const Dashboard = () => {
       render: (val, record, index) => <BaseCell>{formateTime(val)}</BaseCell>,
     },
     {
+      title: '',
       width: 65,
       dataIndex: 'deletable',
       // fixed: bindings.commit?.length > 0 ? 'right' : false,
@@ -436,15 +446,3 @@ export const Dashboard = () => {
     </div>
   );
 };
-
-const container = document.createElement('div');
-container.id = 'app';
-document.body.appendChild(container);
-
-const root = createRoot(container);
-
-root.render(
-  <div>
-    <Dashboard />
-  </div>
-);
