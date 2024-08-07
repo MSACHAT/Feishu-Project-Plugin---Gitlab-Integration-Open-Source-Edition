@@ -96,7 +96,9 @@ const ConfigItem: FC<
                   defaultChecked={props?.enable}
                   onChange={value => {
                     setLoading(true);
-                    enableRule(props?.id, value).finally(() => {
+                    enableRule(props?.id, value)
+                        //用.then()替换.finally
+                        .then(() => {
                       setLoading(false);
                     });
                   }}

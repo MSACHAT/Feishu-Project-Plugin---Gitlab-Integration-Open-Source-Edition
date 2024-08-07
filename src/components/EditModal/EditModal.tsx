@@ -154,7 +154,8 @@ const EditModal: FC<ModalReactProps> = props => {
           }
         })
         .catch(e => Toast.error(e))
-        .finally(() => setModalBtnLoading(false));
+          //用.then()替换.finally()
+        .then(() => setModalBtnLoading(false));
     }
   };
 
