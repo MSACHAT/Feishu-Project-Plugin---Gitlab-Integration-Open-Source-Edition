@@ -21,7 +21,6 @@ enum ITabType {
   BRANCH,
 }
 
-
 const { Text } = Typography;
 
 const formateTime = (time) => {
@@ -127,7 +126,7 @@ const getWorkItemIdFormUrl = () => {
   return '';
 };
 
-export const Tab=() => {
+export const Tab = () => {
   const [bindings, setBindings] = useState<any>([]);
   const { mainSpace } = useSdkContext() || {};
   const project_key = mainSpace?.id ?? '';
@@ -151,7 +150,7 @@ export const Tab=() => {
                 setBindings(res.data);
               }
             })
-              //.finally()改成.then()
+            //.finally()改成.then()
             .then(() => {
               setLoading(false);
             });
@@ -172,7 +171,7 @@ export const Tab=() => {
           setBindings(res.data);
         }
       })
-        //.finally()改成.then()
+      //.finally()改成.then()
       .then(() => {
         setInited(true);
         setLoading(false);
@@ -192,7 +191,12 @@ export const Tab=() => {
     }
   }, [inited]);
 
-  const MRColumns:{title:string,dataIndex:string,width:number,render:any}[] = [
+  const MRColumns: {
+    title: string;
+    dataIndex: string;
+    width: number;
+    render: any;
+  }[] = [
     {
       title: '标题',
       dataIndex: 'title',
@@ -243,7 +247,7 @@ export const Tab=() => {
       render: (val, record, index) => <BaseCell>{formateTime(val)}</BaseCell>,
     },
     {
-      title:"",
+      title: '',
       width: 65,
       dataIndex: 'deletable',
       // fixed: bindings['merge_request']?.length > 0 ? 'right' : undefined,
@@ -263,7 +267,7 @@ export const Tab=() => {
   const RenderCommitTable = [
     {
       // title: bruteTranslate('ID'),
-      title:"ID",
+      title: 'ID',
       dataIndex: 'commit_id',
       width: 155,
       render: (text, record, index) =>
@@ -300,7 +304,7 @@ export const Tab=() => {
       render: (val, record, index) => <BaseCell>{formateTime(val)}</BaseCell>,
     },
     {
-      title:"",
+      title: '',
       width: 65,
       dataIndex: 'deletable',
       // fixed: bindings.commit?.length > 0 ? 'right' : false,
