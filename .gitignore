@@ -7,3 +7,5 @@ dist
 .lpm
 .log
 .lpm-cache
+
+package-lock.json
