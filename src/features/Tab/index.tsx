@@ -13,6 +13,7 @@ import { IconTreeTriangleRight } from '@douyinfe/semi-icons';
 
 import { APP_KEY } from '../../constants';
 import useSdkContext from '../../hooks/useSdkContext';
+import useSdkNavigationHref from "../../hooks/useSdkNavigationHref";
 
 enum ITabType {
   MR = 1,
@@ -110,11 +111,15 @@ const BaseCell = (props) => {
 };
 
 const getWorkItemIdFormUrl = () => {
-  if (window && window.parent) {
+  const href=useSdkNavigationHref()
+  if (href) {
     const res =
-      window.parent.location.href.match(/(?:detail\/)([0-9]+)/) ||
-      window.parent.location.href.match(/(?:issueId\=)([0-9]+)/) ||
-      window.parent.location.href.match(/(?:storyId\=)([0-9]+)/);
+        // window.parent.location.href.match(/(?:detail\/)([0-9]+)/) ||
+        // window.parent.location.href.match(/(?:issueId\=)([0-9]+)/) ||
+        // window.parent.location.href.match(/(?:storyId\=)([0-9]+)/);
+        href.match(/(?:detail\/)([0-9]+)/) ||
+        href.match(/(?:issueId\=)([0-9]+)/) ||
+        href.match(/(?:storyId\=)([0-9]+)/);
     if (res) {
       return res[1];
     }
