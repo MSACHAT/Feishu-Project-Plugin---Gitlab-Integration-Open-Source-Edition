@@ -4,7 +4,6 @@ import {
   ICommonSetting,
   IConfigList,
   INodes,
-  IRelevances,
   IRepos,
   IRepositories,
   ResponseWrap,
@@ -23,15 +22,15 @@ export const fetchApprovalList = (
   );
 
 // 获取节点
-export const fetchFlowNodes = (projectKey: string, templateId: string) =>
-  request.post<INodes>('/m-api/v1/builtin_app/common_api/query_template_detail?app_type=gitlab', {
+export const fetchFlowNodes = (projectKey?: string, templateId?: string) =>
+  request.post<INodes>('/common_api/query_template_detail', {
     project_key: projectKey,
     template_id: Number(templateId) || 0,
   });
 
 // 获取模版列表
-export const fetchTemplateList = (projectKey: string, workItemKey: string) =>
-  request.post<TemplateInfo[]>('/m-api/v1/builtin_app/common_api/query_templates?app_type=gitlab', {
+export const fetchTemplateList = (projectKey?: string, workItemKey?: string) =>
+  request.post<TemplateInfo[]>('/common_api/query_templates', {
     project_key: projectKey,
     work_item_type_key: workItemKey,
   });
@@ -44,7 +43,7 @@ export const fetchConfigList = (project_key: string) =>
       ResponseWrap<{
         data: Array<IConfigList>;
       }>
-    >(`/m-api/v1/builtin_app/gitlab/${project_key}/config`)
+    >(`/config/${project_key}/config`)
     .then(res => res.data);
 
 // 获取签名用于配置webhook
@@ -78,15 +77,7 @@ export const fetchDelRepo = (project_key: string, repoName: string) =>
 
 // 添加规则
 export const fetchAddRules = rule =>
-  request.post<unknown, ResponseWrap<any>>('/m-api/v1/builtin_app/gitlab/config', { rule });
-
-// 解除绑定
-export const fetchUnbind = (project_key: string, work_item_id: string, id: string) =>
-  request.post<unknown, ResponseWrap<string>>('/m-api/v1/builtin_app/gitlab/work_item/unbind', {
-    project_key,
-    work_item_id,
-    id,
-  });
+  request.post<unknown, ResponseWrap<any>>('/config/config', { rule });
 
 // 获取仓库列表
 export const fetchReposList = (project_key: string) =>
@@ -96,36 +87,6 @@ export const fetchReposList = (project_key: string) =>
       repositories: Array<IRepos>;
     }>
   >(`/config/${project_key}/repository`);
-
-// 插件可见性
-export const fetPluginVisible = (
-  work_item_id: string,
-  project_key: string,
-  work_item_type_key: string,
-) =>
-  request.get<
-    unknown,
-    ResponseWrap<{
-      is_visible: boolean;
-    }>
-  >('/m-api/v1/builtin_app/gitlab/visible', {
-    params: { work_item_id, project_key, work_item_type_key },
-  });
-
-// 获取绑定信息
-export const fetchRelevances = (project_key: string, workitem_id: string) =>
-  request.get<unknown, ResponseWrap<IRelevances>>(
-    '/m-api/v1/builtin_app/gitlab/work_item/relevance',
-    {
-      params: { project_key, workitem_id },
-    },
-  );
-
-// 删除规则
-export const fetchDelRule = (id: string, project_key: string) =>
-  request.delete<unknown, ResponseWrap<any>>(
-    `/m-api/v1/builtin_app/gitlab/config/${id}?project_key=${project_key}`,
-  );
 
 // 自定义流转规则
 export const commonSetting = (
@@ -150,25 +111,23 @@ export const getCommonSetting = (project_key: string) =>
 
 export function getBindings(params) {
   return request.get(
-    `/m-api/v1/builtin_app/gitlab/${params.project_key}/${params.workitem_id}/binding`,
+    `/binding/${params.project_key}/${params.workitem_id}/binding`,
   );
 }
 
 export function deleteBindings(params) {
   return request.delete(
-    `/m-api/v1/builtin_app/gitlab/${params.project_key}/${params.workitem_id}/binding`,
+    `/binding/${params.project_key}/${params.workitem_id}/binding`,
     {
+
+        //TODO:检查一下这里不删会不会有影响
       params: { id: params.id },
     },
   );
 }
 
-export function isVisible(params) {
-  return request.get(`/m-api/v1/builtin_app/gitlab/visible`, {
-    params: params,
-  });
-}
-
 export function enableRule(id, enable) {
-  return request.post(`/m-api/v1/builtin_app/gitlab/config/enable/${id}/${enable}`);
+    return request.post(`/config/enable/${id}/${enable}`,{},{headers:{
+            "Content-Type":"application/x-www-form-urlencoded"
+        }});
 }
