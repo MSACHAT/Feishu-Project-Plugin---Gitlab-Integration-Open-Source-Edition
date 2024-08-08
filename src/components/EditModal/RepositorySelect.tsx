@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
+import "./RepositorySelect.less"
 import {
   withField,
   Popover,
@@ -89,10 +90,9 @@ const renderOptions = (options, value, onChange, setRepo) => {
   };
   return (
     <>
-      {/*
-        TODO:这里用了<Tag>来代替<MeegoDisplayText>，记得检查是否可用
-         */}
-      <Tag
+      <div
+          className={"repo-option"}
+          style={{display:"flex",justifyContent:"space-between",alignItems:"center",paddingLeft:"5%",paddingRight:"5%"}}
         onClick={() => {
           if (value && value.length === 0) {
             onChange(undefined);
@@ -101,20 +101,20 @@ const renderOptions = (options, value, onChange, setRepo) => {
           }
         }}
       >
-        <Row>
+        <Row style={{display:"flex",justifyContent:"start",alignItems:"center"}}>
           <Col span={4}>{value && value.length === 0 && <IconTick size={'small'} />}</Col>
-          <Col span={20}>{'任意仓库'}</Col>
+          <Col span={20} style={{width:"100%"}}>{'任意仓库'}</Col>
         </Row>
-      </Tag>
-      <Tooltip
-        showArrow={false}
-        position="right"
-        content={
-          '“任意”指配置了该插件 Webhook 的任意仓库。如需分端驱动，请在配置了 Webhook 的仓库中，挑选目标端仓库，并将其仓库名称粘贴于此。如：ee/madeira-frontend'
-        }
-      >
-        <IconInfoCircle />
-      </Tooltip>
+          <Tooltip
+              showArrow={false}
+              position="right"
+              content={
+                  '“任意”指配置了该插件 Webhook 的任意仓库。如需分端驱动，请在配置了 Webhook 的仓库中，挑选目标端仓库，并将其仓库名称粘贴于此。如：ee/madeira-frontend'
+              }
+          >
+              <IconInfoCircle />
+          </Tooltip>
+      </div>
       {options.length !== 0 && (
         <div style={{ padding: '0 8px' }}>
           <Divider style={{ margin: '4px 0' }} />

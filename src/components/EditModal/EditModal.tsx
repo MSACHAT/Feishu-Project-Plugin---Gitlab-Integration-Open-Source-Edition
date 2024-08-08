@@ -120,6 +120,7 @@ const Title = (props) => (
   >
     <div>{'GitLab 关联'}</div>
     <Text
+        style={{display:"flex",alignItems:"center",color:"rgb(57, 79, 226)"}}
         className={"check-help-document"}
         onClick={()=>{
           window.JSSDK.navigation.open(props.href)
