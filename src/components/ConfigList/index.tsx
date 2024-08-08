@@ -54,16 +54,20 @@ function ConfigList<T extends Record<string, any>>(
 
   useEffect(() => {
     setLoading(true);
-    fetchData()
-      .then(({ rules }) => {
-        // 存储已经配置过的模版
-        setTemplateList((rules ?? []).map((item) => item.template.id));
-        setList(rules ?? []);
-      })
-        //由于.finally()失效了，这里用.then()代替
-      .then(() => {
-        setLoading(false);
-      });
+    try {
+      fetchData()
+          .then(({rules}) => {
+            // 存储已经配置过的模版
+            setTemplateList((rules ?? []).map((item) => item.template.id));
+            setList(rules ?? []);
+          })
+    }
+    catch{
+
+    }
+    finally {
+      setLoading(false);
+    }
   }, [fetchData, forceUpdataFlag]);
 
   return (
