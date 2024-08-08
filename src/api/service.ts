@@ -110,7 +110,9 @@ export const getCommonSetting = (project_key: string) =>
   request.get<unknown, ResponseWrap<ICommonSetting>>(`/config/${project_key}/config`);
 
 export function getBindings({ project_key, workitem_id }) {
-    return request.get(` /binding/${project_key}/${workitem_id}/binding`);
+    return request.get(`/binding/${project_key}/${workitem_id}/binding`,{headers:{
+        "Content-Type":"application/x-www-form-urlencoded"
+        }});
 }
 
 export function deleteBindings({ project_key, workitem_id, id }) {

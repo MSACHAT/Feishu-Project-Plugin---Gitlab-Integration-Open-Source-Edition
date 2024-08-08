@@ -39,7 +39,6 @@ request.interceptors.request.use(
     return config;
   },
   function (error) {
-
     return Promise.reject(error);
   }
 );
@@ -51,7 +50,7 @@ request.interceptors.response.use(
 
       // 在响应之前做一些处理
       const res = response.data;
-      if (res.code === 0) {
+      if (res.code === 200) {
         return res;
       }
       if (res.code === 1000052203) {

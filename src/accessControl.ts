@@ -5,20 +5,20 @@ const sdk = window.JSSDK;
 
 async function getToken(code: string) {
   try {
-    const res = await authAgree(code);
-
-    if (!res || !res.data) {
+    const res = await authAgree(code) as unknown as {token:string,expire_time:number};
+    console.log("RES",res)
+    if (!res) {
 
       return Promise.reject(new Error('Invalid response from authAgree'));
     }
-    const { token, expireTime } = res.data;
+    const { token, expire_time } = res;
 
-    if (!token || !expireTime) {
+    if (!token || !expire_time) {
 
       return Promise.reject(new Error('Token or expireTime is missing'));
     }
     await sdk.storage.setItem(`${APP_KEY}_token`, token);
-    await sdk.storage.setItem(`${APP_KEY}_expire_time`, expireTime);
+    await sdk.storage.setItem(`${APP_KEY}_expire_time`, expire_time.toString());
 
     Promise.resolve(true);
   } catch (error) {
