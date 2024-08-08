@@ -89,7 +89,7 @@ const renderHeader = (required) => (
         </Col>
         <Col span={8}>
           {required ? (
-            <Title heading={6}>
+            <SemiTitle heading={6}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span>{'必填模式'}</span>
                 <Tooltip
@@ -100,7 +100,7 @@ const renderHeader = (required) => (
                   <IconInfoCircle />
                 </Tooltip>
               </div>
-            </Title>
+            </SemiTitle>
           ) : null}
         </Col>
       </Row>
@@ -111,6 +111,7 @@ const renderHeader = (required) => (
 const Title = (props) => (
   <div
     style={{
+      width:"100%",
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -119,6 +120,7 @@ const Title = (props) => (
   >
     <div>{'GitLab 关联'}</div>
     <Text
+        className={"check-help-document"}
         onClick={()=>{
           window.JSSDK.navigation.open(props.href)
         }}
@@ -169,8 +171,8 @@ const EditModal: FC<ModalReactProps> = (props) => {
       }
       fetchAddRules(rules)
         .then((res) => {
-          if (res.code === 0) {
-            // MeegoToast.success(isEdit ? '修改成功' : '添加成功');
+          if (res.code === 200) {
+            Toast.success(isEdit ? '修改成功' : '添加成功');
             setVisible(false);
             setUpdateFlag((prev) => prev + 1);
           } else {
