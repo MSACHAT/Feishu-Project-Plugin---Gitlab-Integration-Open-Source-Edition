@@ -17,14 +17,20 @@ const AsyncFormSelect: FC<AsyncFormSelectProps> = (props) => {
   const [options, setOptions] = useState<OptionProps[]>();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    setLoading(true);
-    setOptions(undefined);
-    fetchData()
-      .then(setOptions)
-        //由于.finally()失效了，这里用.then()代替
-      .then(() => {
+    const fetchDataAndSetOptions = async () => {
+      setLoading(true);
+      setOptions(undefined);
+      try {
+        const data = await fetchData();
+        setOptions(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchDataAndSetOptions();
   }, [fetchData]);
 
   return <Select {...rest} loading={loading} optionList={options} />;

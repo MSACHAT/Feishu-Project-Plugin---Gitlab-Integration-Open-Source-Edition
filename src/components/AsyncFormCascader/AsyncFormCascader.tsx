@@ -19,27 +19,27 @@ const AsyncFormCascader: FC<AsyncFormCascaderProps> = (props) => {
   useEffect(() => {
     setLoading(true);
     setOptions(undefined);
-    fetchData()
-      .then(setOptions)
-        //由于.finally()失效了，这里用.then()代替
-      .then(() => {
+    const fetchDataAndSetOptions = async () => {
+      try {
+        const data = await fetchData();
+        setOptions(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchDataAndSetOptions();
   }, [fetchData]);
 
   return (
     <FormCascader
       {...rest}
       emptyContent={
-        loading ? (
-          <Spin style={{ width: 80 }} tip="" />
-        ) : (
-          <div>
-            暂无数据
-          </div>
-        )
+        loading ? <Spin style={{ width: 80 }} tip='' /> : <div>暂无数据</div>
       }
-      placeholder="请选择工作项或模版"
+      placeholder='请选择工作项或模版'
       treeData={options}
     />
   );
