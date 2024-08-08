@@ -5,12 +5,10 @@ const sdk = window.JSSDK;
 export async function copyText(text: string) {
 
   try {
-    const success = await sdk.clipboard.writeText(text);
-    if (success) {
-      sdk.toast.success('复制成功');
-    } else {
-      sdk.toast.warning('当前浏览器不支持复制');
-    }
+    await sdk.clipboard.writeText(text);
+
+    sdk.toast.success('复制成功');
+
   } catch (error) {
     if (error.name === OutOfLimitError.name) {
       sdk.toast.error(error.originMessage);

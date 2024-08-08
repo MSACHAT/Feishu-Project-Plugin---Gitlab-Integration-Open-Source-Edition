@@ -1,11 +1,19 @@
 import React, { type FC, useEffect, useState } from 'react';
-import { Popconfirm, Card, Row, Switch, Space, Typography } from '@douyinfe/semi-ui';
+import {
+  Popconfirm,
+  Card,
+  Row,
+  Switch,
+  Space,
+  Typography,
+} from '@douyinfe/semi-ui';
 
 import { IconDelete, IconGitlabLogo } from '@douyinfe/semi-icons';
 import rightArrow from '../../assets/right_arrow.svg';
 import logo from '../../assets/logo_meego.png';
 import { enableRule } from '../../api/service';
 import { IConfigList } from '../../api/types';
+import { IconArrowRight } from '@douyinfe/semi-icons';
 const { Title } = Typography;
 
 const iconsWrapStyle = {
@@ -30,7 +38,7 @@ const ConfigItem: FC<
     onRemove: (id: string) => void;
     onEdit: (IConfigList) => void;
   }
-> = props => {
+> = (props) => {
   const { onRemove, onEdit, ...rest } = props;
   const [invalid, setInvalid] = useState(false);
   const [title, setTitle] = useState('');
@@ -48,7 +56,10 @@ const ConfigItem: FC<
 
   const Icons = ({ icon }) => (
     <div style={iconsWrapStyle}>
-      <img src={icon} style={{ ...iconsStyle, filter: invalid ? 'grayscale(100%)' : 'none' }} />
+      <img
+        src={icon}
+        style={{ ...iconsStyle, filter: invalid ? 'grayscale(100%)' : 'none' }}
+      />
     </div>
   );
 
@@ -64,7 +75,9 @@ const ConfigItem: FC<
         style={{
           marginBottom: 16,
           position: 'relative',
-          background: invalid ? 'var(--semi-color-fill-0)' : 'var(--semi-color-bg-0)',
+          background: invalid
+            ? 'var(--semi-color-fill-0)'
+            : 'var(--semi-color-bg-0)',
         }}
         title={
           <div
@@ -75,32 +88,37 @@ const ConfigItem: FC<
             }}
           >
             {/*TODO:这边align="start"改成align="top"了，不确定是否有问题，待检查*/}
-            <Row type="flex" justify="start" align="top">
+            <Row type='flex' justify='start' align='top'>
               <div style={iconsWrapStyle}>
-                <IconGitlabLogo size="extra-large" />
+                <IconGitlabLogo size='extra-large' />
               </div>
-              <div style={{ margin: 'auto 10px auto 10px' }} className="flex-hor-center">
-                <img src={rightArrow} />
+              <div
+                style={{ margin: 'auto 10px auto 10px' }}
+                className='flex-hor-center'
+              >
+                <IconArrowRight size='extra-large' />
               </div>
               <Icons icon={logo} />
             </Row>
             <Space>
               <div
                 style={{ display: 'flex', alignItems: 'center' }}
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation();
                 }}
               >
                 <Switch
                   loading={loading}
                   defaultChecked={props?.enable}
-                  onChange={value => {
+                  onChange={async (value) => {
                     setLoading(true);
-                    enableRule(props?.id, value)
-                        //用.then()替换.finally
-                        .then(() => {
+                    try {
+                      await enableRule(props?.id, value);
+                    } catch (error) {
+                      console.error('Error enabling rule:', error);
+                    } finally {
                       setLoading(false);
-                    });
+                    }
                   }}
                 ></Switch>
               </div>
@@ -113,7 +131,7 @@ const ConfigItem: FC<
                 onConfirm={() => removeConfig(props.id)}
               >
                 <IconDelete
-                  onClick={e => {
+                  onClick={(e) => {
                     e.stopPropagation();
                   }}
                   style={{
@@ -128,7 +146,9 @@ const ConfigItem: FC<
         }
       >
         <Title heading={6}>
-          {invalid ? title : `GitLab 关联 ${props.work_item_type.name} -> ${props.template.name}`}
+          {invalid
+            ? title
+            : `GitLab 关联 ${props.work_item_type.name} -> ${props.template.name}`}
         </Title>
       </Card>
     </div>
