@@ -17,10 +17,8 @@ export const fetchApprovalList = (
   template_id: string | number,
 ) =>
   request.get<unknown, ResponseWrap<{ data: GithubEventList }>>(
-    '/m-api/v1/builtin_app/gitlab/events',
-    { params: { project_key, workitem_key, template_id } },
+    `/common_api/projects/${project_key}/work_item_types`,
   );
-
 // 获取节点
 export const fetchFlowNodes = (projectKey?: string, templateId?: string) =>
   request.post<INodes>('/common_api/query_template_detail', {
@@ -116,14 +114,16 @@ export function getBindings({ project_key, workitem_id }) {
 }
 
 export function deleteBindings({ project_key, workitem_id, id }) {
-    return request.delete(`/binding/${project_key}/${workitem_id}/binding`, {
-        params: { id: id },
-    });
+  return request.delete(`/binding/${project_key}/${workitem_id}/binding`, {
+    params: { id: id },
+  });
 }
 
 
 export function enableRule(id, enable) {
-    return request.post(`/config/enable/${id}/${enable}`,{},{headers:{
-            "Content-Type":"application/x-www-form-urlencoded"
-        }});
+  return request.post(`/config/enable/${id}/${enable}`, {}, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  });
 }

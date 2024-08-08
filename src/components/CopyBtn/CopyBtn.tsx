@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { IconCopy } from '@douyinfe/semi-icons';
 import { Tooltip, Button, Toast } from '@douyinfe/semi-ui';
 import { fetchSignature } from '../../api/service';
-import { copyText, getHref } from '../../utils';
+import { copyText } from '../../utils';
 import useSdkContext from '../../hooks/useSdkContext';
+import { requestHost } from '../../constants';
 
 export default function CopyBtn() {
   const context = useSdkContext();
@@ -28,13 +29,8 @@ export default function CopyBtn() {
         icon={<IconCopy style={{ fill: 'white' }} />}
         theme='solid'
         onClick={async () => {
-          const url = await getHref();
           if (signature) {
-            copyText(
-              `${
-                url.origin || ''
-              }/m-api/v1/builtin_app/gitlab/webhook?signature=${signature}`
-            );
+            copyText(requestHost + `/webhook?=${signature}`);
           } else {
             setSignature(null);
 
