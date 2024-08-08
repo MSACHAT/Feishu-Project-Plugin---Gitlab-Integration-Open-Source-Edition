@@ -4,11 +4,11 @@
   "pluginSecret": "e05ef0985e1f95839ba424be7e40a4a38e616926d2c5ecd0ed464231aec3efd02c30c07b67346a55c21759bb7f197e0a",
   "resources": [
     {
-      "id": "Tab0.0.1",
+      "id": "tab_",
       "entry": "./src/features/demo/index.tsx"
     },
     {
-     "id": "Integration0.0.1",
+     "id": "integration_",
       "entry": "./src/features/Config/index.tsx"
     }
   ]

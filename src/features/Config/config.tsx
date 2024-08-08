@@ -37,9 +37,11 @@ export const Config = () => {
     [projectKey]
   );
   useEffect(() => {
-    fetchReposList(projectKey).then((res) => {
-      setRepos(res.data?.repositories.map((item) => item) || []);
-    });
+      if(projectKey) {
+          fetchReposList(projectKey).then((res) => {
+              setRepos(res.data?.repositories.map((item) => item) || []);
+          });
+      }
   }, [projectKey]);
 
   const renderHeader = useMemo(

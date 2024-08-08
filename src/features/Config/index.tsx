@@ -10,6 +10,6 @@ document.body.appendChild(container);
 const root = createRoot(container);
 root.render(
     <div>
-        <h1>128368123</h1>
+        <Config/>
     </div>
 );

@@ -124,3 +124,9 @@ export function enableRule(id, enable) {
     }
   });
 }
+
+// 删除规则
+export const fetchDelRule = (id: string) =>
+    request.delete<unknown, ResponseWrap<any>>(
+        `/config/${id}/config`
+    );

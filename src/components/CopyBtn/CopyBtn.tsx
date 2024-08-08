@@ -3,20 +3,20 @@ import { IconCopy } from '@douyinfe/semi-icons';
 import { Tooltip, Button, Toast } from '@douyinfe/semi-ui';
 import { fetchSignature } from '../../api/service';
 import { copyText } from '../../utils';
-import useSdkContext from '../../hooks/useSdkContext';
 import { requestHost } from '../../constants';
 
 export default function CopyBtn() {
-  const context = useSdkContext();
-  const mainSpace = context?.mainSpace;
-  const spaceId = mainSpace?.id ?? '';
   const [signature, setSignature] = useState<string | null>(null);
   useEffect(() => {
-    fetchSignature(spaceId).then((res) => {
-      if (res?.data?.signature) {
-        setSignature(res.data.signature);
-      }
-    });
+    (async () => {
+      const context = await window.JSSDK.Context.load()
+      const spaceId = context.mainSpace?.id
+      fetchSignature(spaceId||"").then((res) => {
+        if (res?.data?.signature) {
+          setSignature(res.data.signature);
+        }
+      });
+    })()
   }, []);
 
   return (
