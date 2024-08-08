@@ -21,7 +21,7 @@ export interface GithubEvent<T> {
 }
 
 export interface GithubEventList {
-  key: string;
+  typeKey: string;
   name: string;
 }
 
