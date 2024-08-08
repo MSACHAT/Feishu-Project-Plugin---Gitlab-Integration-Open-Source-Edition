@@ -12,12 +12,9 @@ import type {
 
 
 export const fetchApprovalList = (
-  project_key: string,
-  workitem_key: string,
-  template_id: string | number,
 ) =>
   request.get<unknown, ResponseWrap<{ data: GithubEventList }>>(
-    `/common_api/projects/${project_key}/work_item_types`,
+    `/config/events`,
   );
 // 获取节点
 export const fetchFlowNodes = (projectKey?: string, templateId?: string) =>

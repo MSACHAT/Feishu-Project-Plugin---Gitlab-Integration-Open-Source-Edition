@@ -4,10 +4,12 @@ import { createRoot } from 'react-dom/client';
 import {Config} from "./config";
 
 const container = document.createElement('div');
-container.id = 'config';
+container.id = 'app';
 document.body.appendChild(container);
 
 const root = createRoot(container);
 root.render(
-    <Config/>,
+    <div>
+        <h1>128368123</h1>
+    </div>
 );
