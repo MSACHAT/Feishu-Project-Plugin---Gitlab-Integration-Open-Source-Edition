@@ -13,9 +13,9 @@ const CustomRule = () => {
   const [visible, setVisible] = useState(false);
   const [formApi, setFormApi] = useState<any>(null);
 
-  const showDialog = () => {
-    setVisible(true);
-  };
+  // const showDialog = () => {
+  //   setVisible(true);
+  // };
 
   useEffect(() => {
     if (visible && formApi?.setValues) {

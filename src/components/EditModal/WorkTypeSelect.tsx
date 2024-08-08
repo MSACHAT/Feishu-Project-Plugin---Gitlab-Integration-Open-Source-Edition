@@ -15,7 +15,7 @@ import {
   fetchFlowNodes,
   fetchTemplateList,
 } from '../../api/service';
-import { type IWorkItem } from '../../api/types';
+import {type IWorkItem, TemplateInfo} from '../../api/types';
 import type { FormApi } from '@douyinfe/semi-ui/lib/es/form';
 
 type Props = Omit<AsyncFormCascaderProps, 'fetchData'> & {
@@ -57,11 +57,13 @@ const WorkTypeSelect: FC<Props> = (props) => {
     const tempList = await Promise.all(
       enabledWorkObjectList.map((wo) =>
         fetchTemplateList(spaceId, wo.id)
-          .then((res) => res.data)
+          .then((res) => res)
           .catch(() => [])
       )
-    );
+    )as unknown as TemplateInfo[][];
+    console.log(tempList)
     enabledWorkObjectList.map(async (workObj, workObjIndex) => {
+      console.log(workObjIndex)
       const children: any = [];
       tempList[workObjIndex].map(
         (temp) =>
@@ -109,7 +111,7 @@ const WorkTypeSelect: FC<Props> = (props) => {
         value: conf.state_key,
       }));
     });
-    const events = await fetchApprovalList(spaceId, wId, id).then((res) => {
+    const events = await fetchApprovalList().then((res) => {
       return res.data?.data || [];
     });
     setEventList(events as any);
