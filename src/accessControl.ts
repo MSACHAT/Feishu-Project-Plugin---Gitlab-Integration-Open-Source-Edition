@@ -31,15 +31,15 @@ async function getToken(code: string) {
 
 
 async function checkLogin() {
-  const token = sdk.storage.getItem(`${APP_KEY}_token`);
-  const expireTimeStr = sdk.storage.getItem(`${APP_KEY}_expire_time`);
-
+  const token = await sdk.storage.getItem(`${APP_KEY}_token`);
+  const expireTimeStr = await sdk.storage.getItem(`${APP_KEY}_expire_time`);
+console.log("asidhasoidhasd")
   if (!token || !expireTimeStr) {
     return false;
   }
 
   const expireTime = Number(expireTimeStr);
-  if (isNaN(expireTime) || expireTime - Date.now() <= 0) {
+  if ( isNaN(expireTime) || (expireTime <= 0)) {
     return false;
   }
 
