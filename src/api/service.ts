@@ -1,5 +1,5 @@
 import request from './requests'
-import {
+import type {
   GithubEventList,
   ICommonSetting,
   IConfigList,
@@ -52,7 +52,7 @@ export const fetchSignature = (project_key: string) =>
     .get<
       unknown,
       ResponseWrap<{
-        code: number;
+
         data: {
           signature: string;
         };
@@ -70,9 +70,9 @@ export const fetchAddRepo = (project_key: string, repositories: Array<IRepositor
 export const fetchDelRepo = (project_key: string, repoName: string) =>
   request.delete<unknown, ResponseWrap<string>>(` /config/${project_key}/repository`, {
     params: { path_with_namespace: repoName },
-      headers:{
-        "Content-Type":"application/x-www-form-urlencoded"
-      }
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
   });
 
 // 添加规则
@@ -109,22 +109,16 @@ export const commonSetting = (
 export const getCommonSetting = (project_key: string) =>
   request.get<unknown, ResponseWrap<ICommonSetting>>(`/config/${project_key}/config`);
 
-export function getBindings(params) {
-  return request.get(
-    `/binding/${params.project_key}/${params.workitem_id}/binding`,
-  );
+export function getBindings({ project_key, workitem_id }) {
+    return request.get(` /binding/${project_key}/${workitem_id}/binding`);
 }
 
-export function deleteBindings(params) {
-  return request.delete(
-    `/binding/${params.project_key}/${params.workitem_id}/binding`,
-    {
-
-        //TODO:检查一下这里不删会不会有影响
-      params: { id: params.id },
-    },
-  );
+export function deleteBindings({ project_key, workitem_id, id }) {
+    return request.delete(`/binding/${project_key}/${workitem_id}/binding`, {
+        params: { id: id },
+    });
 }
+
 
 export function enableRule(id, enable) {
     return request.post(`/config/enable/${id}/${enable}`,{},{headers:{
