@@ -8,14 +8,14 @@ import React, {
 import AsyncFormCascader, {
   type AsyncFormCascaderProps,
 } from '../AsyncFormCascader/AsyncFormCascader';
-import { getFlowMode, getSpace } from '../../utils/utils';
+import { getFlowMode, getSpace } from '../../utils';
 import { ConfigContext } from '../../context/configContext';
 import {
   fetchApprovalList,
   fetchFlowNodes,
   fetchTemplateList,
 } from '../../api/service';
-import {type IWorkItem} from '../../api/types';
+import { type IWorkItem } from '../../api/types';
 import type { FormApi } from '@douyinfe/semi-ui/lib/es/form';
 
 type Props = Omit<AsyncFormCascaderProps, 'fetchData'> & {
