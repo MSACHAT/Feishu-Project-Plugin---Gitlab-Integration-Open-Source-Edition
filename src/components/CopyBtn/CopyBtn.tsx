@@ -39,7 +39,7 @@ export default function CopyBtn() {
           }
         }}
       >
-        '复制 URL'
+        复制 URL
       </Button>
     </Tooltip>
   );
