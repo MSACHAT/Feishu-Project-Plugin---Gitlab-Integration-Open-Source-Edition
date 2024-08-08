@@ -1,5 +1,5 @@
-import React, { lazy, useCallback, useEffect, useMemo, useState } from 'react';
-import { fetchConfigList, fetchReposList } from '../../api/service';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {fetchConfigList, fetchDelRule, fetchReposList} from '../../api/service';
 import { IConfigList, IRepos } from '../../api/types';
 import ConfigList from '../../components/ConfigList';
 import ConfigItem from '../../components/ConfigList/ConfigItem';
@@ -9,7 +9,7 @@ import { ConfigContext } from '../../context/configContext';
 
 import CustomRule from '../../components/CustomRule/CustomRule';
 import useSdkContext from '../../hooks/useSdkContext';
-import { Spin } from '@douyinfe/semi-ui';
+import {Toast} from "@douyinfe/semi-ui";
 
 export const Config = () => {
   const { mainSpace } = useSdkContext() ?? {};
@@ -33,11 +33,12 @@ export const Config = () => {
   const [internal, setInternal] = useState(false);
 
   const fetchData = useCallback(() => {
-    if (projectKey) {
-      fetchConfigList(projectKey).then((res) =>
-        res?.data && res.data.length ? { rules: res?.data } : {}
-      );
-    }
+      if(projectKey) {
+          fetchConfigList(projectKey).then((res) =>
+              res?.data && res.data.length ? {rules: res?.data} : {}
+          );
+      }
+
   }, [projectKey]);
   useEffect(() => {
     if (projectKey) {
@@ -95,6 +96,7 @@ export const Config = () => {
       }}
     >
       <ConfigList<IConfigList>
+          //@ts-ignore
         fetchData={fetchData}
         forceUpdataFlag={updateFlag}
         addBtnText='添加流转规则'
@@ -103,16 +105,27 @@ export const Config = () => {
           <ConfigItem
             {...item}
             onRemove={(id: string) => {
-              // ...删除规则的逻辑
+                fetchDelRule(id).then((res) => {
+                    if (res.code === 0) {
+                        setUpdateFlag((flag) => flag + 1);
+                    } else {
+                        Toast.error(res.msg);
+                    }
+                });
             }}
             onEdit={(item) => {
-              // ...编辑规则的逻辑
+                setVisible(true);
+                setIsEdit(true);
+                setEditInfo(item);
             }}
           />
         )}
         title='GitLab 规则列表'
         onClickAdd={() => {
-          // ...添加规则的逻辑
+            setIsEdit(false);
+            setVisible(true);
+            setModalLoading(true);
+            setEditInfo(null);
         }}
       />
       <EditModal
@@ -126,7 +139,8 @@ export const Config = () => {
         okText={isEdit ? '修改' : '创建'}
         cancelText='取消'
         onCancel={() => {
-          // ...关闭模态框的逻辑
+            setVisible(false);
+            setIsEdit(false);
         }}
       />
     </ConfigContext.Provider>

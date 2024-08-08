@@ -119,7 +119,9 @@ const Title = (props) => (
   >
     <div>{'GitLab 关联'}</div>
     <Text
-      link={{ href: props.href, target: '_blank' }}
+        onClick={()=>{
+          window.JSSDK.navigation.open(props.href)
+        }}
       icon={<IconLink />}
       underline
     >

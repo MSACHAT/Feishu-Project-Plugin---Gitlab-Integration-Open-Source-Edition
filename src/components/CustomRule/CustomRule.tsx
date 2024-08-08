@@ -13,9 +13,9 @@ const CustomRule = () => {
   const [visible, setVisible] = useState(false);
   const [formApi, setFormApi] = useState<any>(null);
 
-  const showDialog = () => {
-    setVisible(true);
-  };
+  // const showDialog = () => {
+  //   setVisible(true);
+  // };
 
   useEffect(() => {
     if (visible && formApi?.setValues) {
@@ -73,7 +73,7 @@ const CustomRule = () => {
 
   return (
     <>
-      <Button onClick={showDialog}>全局配置</Button>
+      {/*<Button onClick={showDialog}>全局配置</Button>*/}
       <Modal
         title="工作项联动配置"
         visible={visible}
