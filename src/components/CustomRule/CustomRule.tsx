@@ -73,7 +73,7 @@ const CustomRule = () => {
 
   return (
     <>
-      <Button onClick={showDialog}>全局配置</Button>
+      {/*<Button onClick={showDialog}>全局配置</Button>*/}
       <Modal
         title="工作项联动配置"
         visible={visible}

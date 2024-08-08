@@ -12,8 +12,9 @@ export default function CopyBtn() {
       const context = await window.JSSDK.Context.load()
       const spaceId = context.mainSpace?.id
       fetchSignature(spaceId||"").then((res) => {
-        if (res?.data?.signature) {
-          setSignature(res.data.signature);
+        const result=res as unknown as {signature:string}
+        if (result.signature) {
+          setSignature(result.signature);
         }
       });
     })()
@@ -30,7 +31,7 @@ export default function CopyBtn() {
         theme='solid'
         onClick={async () => {
           if (signature) {
-            copyText(requestHost + `/webhook?=${signature}`);
+            await copyText(requestHost + `/webhook?=${signature}`);
           } else {
             setSignature(null);
 

@@ -1,4 +1,4 @@
-import React, { lazy, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { fetchConfigList, fetchReposList } from '../../api/service';
 import { IConfigList, IRepos } from '../../api/types';
 import ConfigList from '../../components/ConfigList';
@@ -9,7 +9,6 @@ import { ConfigContext } from '../../context/configContext';
 
 import CustomRule from '../../components/CustomRule/CustomRule';
 import useSdkContext from '../../hooks/useSdkContext';
-import { Spin } from '@douyinfe/semi-ui';
 
 export const Config = () => {
   const { mainSpace } = useSdkContext() ?? {};
@@ -33,11 +32,11 @@ export const Config = () => {
   const [internal, setInternal] = useState(false);
 
   const fetchData = useCallback(() => {
-    if (projectKey) {
-      fetchConfigList(projectKey).then((res) =>
+
+      return fetchConfigList(projectKey).then((res) =>
         res?.data && res.data.length ? { rules: res?.data } : {}
       );
-    }
+
   }, [projectKey]);
   useEffect(() => {
     if (projectKey) {
