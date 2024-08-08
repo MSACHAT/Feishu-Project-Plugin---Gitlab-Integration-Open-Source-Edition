@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { IconCopy } from '@douyinfe/semi-icons';
 import { Tooltip, Button, Toast } from '@douyinfe/semi-ui';
 import { fetchSignature } from '../../api/service';
-import { copyText, getHref } from '../../utils/utils';
+import { copyText, getHref } from '../../utils';
 import useSdkContext from '../../hooks/useSdkContext';
 
 export default function CopyBtn() {

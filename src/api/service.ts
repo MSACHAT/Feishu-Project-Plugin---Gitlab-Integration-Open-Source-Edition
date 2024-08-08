@@ -1,5 +1,5 @@
 import request from './requests'
-import {
+import type {
   GithubEventList,
   ICommonSetting,
   IConfigList,
@@ -53,7 +53,7 @@ export const fetchSignature = (project_key: string) =>
     .get<
       unknown,
       ResponseWrap<{
-        code: number;
+
         data: {
           signature: string;
         };
@@ -71,9 +71,9 @@ export const fetchAddRepo = (project_key: string, repositories: Array<IRepositor
 export const fetchDelRepo = (project_key: string, repoName: string) =>
   request.delete<unknown, ResponseWrap<string>>(` /config/${project_key}/repository`, {
     params: { path_with_namespace: repoName },
-      headers:{
-        "Content-Type":"application/x-www-form-urlencoded"
-      }
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
   });
 
 // 添加规则
@@ -93,20 +93,7 @@ export const fetchReposList = (project_key: string) =>
     }>
   >(`/config/${project_key}/repository`);
 
-// 插件可见性
-export const fetPluginVisible = (
-  work_item_id: string,
-  project_key: string,
-  work_item_type_key: string,
-) =>
-  request.get<
-    unknown,
-    ResponseWrap<{
-      is_visible: boolean;
-    }>
-  >('/m-api/v1/builtin_app/gitlab/visible', {
-    params: { work_item_id, project_key, work_item_type_key },
-  });
+
 
 // 获取绑定信息
 export const fetchRelevances = (project_key: string, workitem_id: string) =>
