@@ -57,7 +57,7 @@ const WorkTypeSelect: FC<Props> = (props) => {
     const tempList = await Promise.all(
       enabledWorkObjectList.map((wo) =>
         fetchTemplateList(spaceId, wo.id)
-          .then((res) => res)
+          .then((res) => res.data)
           .catch(() => [])
       )
     )as unknown as TemplateInfo[][];

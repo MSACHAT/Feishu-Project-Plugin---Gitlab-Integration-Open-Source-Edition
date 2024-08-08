@@ -36,6 +36,8 @@ export const Config = () => {
       if(projectKey) {
           fetchConfigList(projectKey).then((res) =>
               res?.data && res.data.length ? {rules: res?.data} : {}
+          ).catch(
+              err=>console.log(err)
           );
       }
 
