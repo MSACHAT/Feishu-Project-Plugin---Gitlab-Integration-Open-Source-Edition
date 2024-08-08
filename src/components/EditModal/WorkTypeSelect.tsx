@@ -15,7 +15,7 @@ import {
   fetchFlowNodes,
   fetchTemplateList,
 } from '../../api/service';
-import {type IWorkItem} from '../../api/types';
+import { type IWorkItem } from '../../api/types';
 import type { FormApi } from '@douyinfe/semi-ui/lib/es/form';
 
 type Props = Omit<AsyncFormCascaderProps, 'fetchData'> & {
