@@ -119,9 +119,9 @@ const Title = (props) => (
   >
     <div>{'GitLab 关联'}</div>
     <Text
-        onClick={()=>{
-          window.JSSDK.navigation.open(props.href)
-        }}
+      onClick={() => {
+        window.JSSDK.navigation.open(props.href);
+      }}
       icon={<IconLink />}
       underline
     >
@@ -170,7 +170,7 @@ const EditModal: FC<ModalReactProps> = (props) => {
       fetchAddRules(rules)
         .then((res) => {
           if (res.code === 0) {
-            // MeegoToast.success(isEdit ? '修改成功' : '添加成功');
+            Toast.success(isEdit ? '修改成功' : '添加成功');
             setVisible(false);
             setUpdateFlag((prev) => prev + 1);
           } else {

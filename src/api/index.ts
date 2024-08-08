@@ -13,7 +13,7 @@ interface ResWrapper<T = {}> {
 interface AuthRes {
 
   token: string;
-  expireTime: string;
+  expire_Time: string;
 }
 
 axios.interceptors.request.use(
