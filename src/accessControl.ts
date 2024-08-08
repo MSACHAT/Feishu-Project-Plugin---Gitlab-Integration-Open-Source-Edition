@@ -33,17 +33,14 @@ async function getToken(code: string) {
 async function checkLogin() {
   const token = await sdk.storage.getItem(`${APP_KEY}_token`);
   const expireTimeStr = await sdk.storage.getItem(`${APP_KEY}_expire_time`);
-console.log("asidhasoidhasd")
   if (!token || !expireTimeStr) {
     return false;
   }
 
   const expireTime = Number(expireTimeStr);
-  if ( isNaN(expireTime) || (expireTime <= 0)) {
-    return false;
-  }
+  return !(isNaN(expireTime) || (expireTime <= 0));
 
-  return true;
+
 }
 
 

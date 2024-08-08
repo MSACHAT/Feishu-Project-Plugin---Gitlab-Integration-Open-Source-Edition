@@ -8,7 +8,7 @@ import React, {
 import AsyncFormCascader, {
   type AsyncFormCascaderProps,
 } from '../AsyncFormCascader/AsyncFormCascader';
-import { getFlowMode, getSpace } from '../../utils/utils';
+import { getFlowMode, getSpace } from '../../utils';
 import { ConfigContext } from '../../context/configContext';
 import {
   fetchApprovalList,
