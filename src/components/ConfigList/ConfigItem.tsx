@@ -9,7 +9,7 @@ import {
 } from '@douyinfe/semi-ui';
 
 import { IconDelete, IconGitlabLogo } from '@douyinfe/semi-icons';
-import rightArrow from '../../assets/right_arrow.svg';
+
 import logo from '../../assets/logo_meego.png';
 import { enableRule } from '../../api/service';
 import { IConfigList } from '../../api/types';
