@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Collapse,
   Typography,
@@ -12,8 +12,6 @@ import './index.less';
 import { IconTreeTriangleRight } from '@douyinfe/semi-icons';
 
 import { APP_KEY } from '../../constants';
-import useSdkContext from '../../hooks/useSdkContext';
-import useSdkNavigationHref from "../../hooks/useSdkNavigationHref";
 
 enum ITabType {
   MR = 1,
@@ -109,8 +107,8 @@ const BaseCell = (props) => {
   );
 };
 
-const getWorkItemIdFormUrl = () => {
-  const href=useSdkNavigationHref()
+const getWorkItemIdFormUrl = async () => {
+  const href = await window.JSSDK.navigation.getHref()
   if (href) {
     const res =
         // window.parent.location.href.match(/(?:detail\/)([0-9]+)/) ||
@@ -128,9 +126,8 @@ const getWorkItemIdFormUrl = () => {
 
 export const Tab = () => {
   const [bindings, setBindings] = useState<any>([]);
-  const { mainSpace } = useSdkContext() || {};
-  const project_key = mainSpace?.id ?? '';
-  const workitem_id = getWorkItemIdFormUrl();
+  const [project_key,setProjectKey]=useState<string|undefined>()
+  const [workitem_id,setWorkItemId] = useState<string>("")
   const [loading, setLoading] = useState(false);
   const [inited, setInited] = useState(false);
   //@ts-ignore
@@ -164,19 +161,30 @@ export const Tab = () => {
   );
 
   useEffect(() => {
-    setLoading(true);
-    getBindings({ project_key, workitem_id })
-      .then((res) => {
-        if (res.data) {
-          setBindings(res.data);
-        }
-      })
-      //.finally()改成.then()
-      .then(() => {
-        setInited(true);
-        setLoading(false);
-      });
+    (async () => {
+      const context = await window.JSSDK.Context.load()
+      setProjectKey(context.mainSpace?.id)
+      setLoading(true);
+      const workItemId=await getWorkItemIdFormUrl()
+      setWorkItemId(workItemId)
+      getBindings({project_key:context.mainSpace?.id, workitem_id:workItemId})
+          .then((res) => {
+            if (res.data) {
+              setBindings(res.data);
+            }
+          })
+          //.finally()改成.then()
+          .then(() => {
+            setInited(true);
+            setLoading(false);
+          });
+    })()
   }, []);
+
+  useEffect(()=>{
+    setProjectKey(project_key)
+    setWorkItemId(workitem_id)
+  },[project_key,workitem_id])
 
   useEffect(() => {
     if (inited) {
