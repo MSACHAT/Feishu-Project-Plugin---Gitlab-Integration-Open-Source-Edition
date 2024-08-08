@@ -79,11 +79,7 @@ export const fetchAddRules = rule =>
 
 // 解除绑定
 export const fetchUnbind = (project_key: string, work_item_id: string, id: string) =>
-  request.post<unknown, ResponseWrap<string>>('/m-api/v1/builtin_app/gitlab/work_item/unbind', {
-    project_key,
-    work_item_id,
-    id,
-  });
+  request.delete<unknown, ResponseWrap<string>>(`/binding/${project_key}/${work_item_id}/binding`);
 
 // 获取仓库列表
 export const fetchReposList = (project_key: string) =>
@@ -145,26 +141,19 @@ export const commonSetting = (
 export const getCommonSetting = (project_key: string) =>
   request.get<unknown, ResponseWrap<ICommonSetting>>(`/config/${project_key}/config`);
 
-export function getBindings(params) {
-  return request.get(
-    `/m-api/v1/builtin_app/gitlab/${params.project_key}/${params.workitem_id}/binding`,
-  );
+// 获取自定义流转规则
+
+export function getBindings({ project_key, workitem_id }) {
+  return request.get(` /binding/${project_key}/${workitem_id}/binding`);
 }
 
-export function deleteBindings(params) {
-  return request.delete(
-    `/m-api/v1/builtin_app/gitlab/${params.project_key}/${params.workitem_id}/binding`,
-    {
-      params: { id: params.id },
-    },
-  );
-}
-
-export function isVisible(params) {
-  return request.get(`/m-api/v1/builtin_app/gitlab/visible`, {
-    params: params,
+export function deleteBindings({ project_key, workitem_id, id }) {
+  return request.delete(`/binding/${project_key}/${workitem_id}/binding`, {
+    params: { id: id },
   });
 }
+
+
 
 export function enableRule(id, enable) {
   return request.post(`/m-api/v1/builtin_app/gitlab/config/enable/${id}/${enable}`);
