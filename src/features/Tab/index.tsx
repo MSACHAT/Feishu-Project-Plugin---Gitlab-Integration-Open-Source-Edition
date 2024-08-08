@@ -384,6 +384,7 @@ export const Tab = () => {
         <div className='meego-plugin-gitlab-tab'>
           {inited && (
             <Collapse
+                className={"collapse"}
               expandIconPosition='left'
               defaultActiveKey={defaultActiveKey}
               expandIcon={<IconTreeTriangleRight size={'extra-small'} />}
