@@ -57,7 +57,7 @@ export const fetchSignature = (project_key: string) =>
 
 // 添加仓库
 export const fetchAddRepo = (project_key: string, repositories: Array<IRepositories>) =>
-  request.post<unknown, ResponseWrap<string>>(` /config/${project_key}/repository`, {
+  request.post<unknown, ResponseWrap<string>>(`/config/${project_key}/repository`, {
     repositories,
   });
 
