@@ -79,7 +79,7 @@ const renderSearchInput = (
 const renderOptions = (options, value, onChange, setRepo) => {
   const context = useSdkContext();
   const deleteRepos = (e, index: number) => {
-    e?.stopPropagation();
+    // e?.stopPropagation();
     fetchDelRepo(
       context?.mainSpace?.id ? context?.mainSpace?.id : Toast.error('获取空间ID失败，请刷新重试'),
       options[index]?.path_with_namespace || '',
@@ -126,6 +126,8 @@ const renderOptions = (options, value, onChange, setRepo) => {
         return (
           //TODO:这边用了Tag来代替MeegoDisplayText，不确定行不行，记得检查
           <Tag
+              className={"repo-option"}
+              style={{alignItems:"center",backgroundColor:"rgb(255, 255, 255)",height:"4vh",gap:"0.5vw"}}
             onClick={() => {
               let res: string[] | undefined = [...(value || [])];
               if (selected) {
@@ -149,9 +151,9 @@ const renderOptions = (options, value, onChange, setRepo) => {
               deleteRepos(e, index);
             }}
           >
-            <Row>
-              <Col span={4}>{selected && <IconTick size={'small'} />}</Col>
-              <Col span={20}>{v}</Col>
+            <Row style={{display:"flex",justifyContent:"space-evenly",alignItems:"center",width:"100%"}}>
+              <Col span={10}>{selected && <IconTick size={'small'} />}</Col>
+              <Col span={20} style={{width:"100%"}}>{v}</Col>
             </Row>
           </Tag>
         );
@@ -219,8 +221,9 @@ const RepositorySelectComp = withField(props => {
         </div>
       }
     >
-      <div>
+      <div style={{display:"flex",alignItems:"center"}}>
         <Select
+            style={{minWidth:"19.5vw"}}
           multiple
           maxTagCount={1}
           showRestTagsPopover={true}
