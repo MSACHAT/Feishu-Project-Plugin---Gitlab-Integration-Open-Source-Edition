@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Collapse,
   Typography,
@@ -108,15 +108,15 @@ const BaseCell = (props) => {
 };
 
 const getWorkItemIdFormUrl = async () => {
-  const href = await window.JSSDK.navigation.getHref()
+  const href = await window.JSSDK.navigation.getHref();
   if (href) {
     const res =
-        // window.parent.location.href.match(/(?:detail\/)([0-9]+)/) ||
-        // window.parent.location.href.match(/(?:issueId\=)([0-9]+)/) ||
-        // window.parent.location.href.match(/(?:storyId\=)([0-9]+)/);
-        href.match(/(?:detail\/)([0-9]+)/) ||
-        href.match(/(?:issueId\=)([0-9]+)/) ||
-        href.match(/(?:storyId\=)([0-9]+)/);
+      // window.parent.location.href.match(/(?:detail\/)([0-9]+)/) ||
+      // window.parent.location.href.match(/(?:issueId\=)([0-9]+)/) ||
+      // window.parent.location.href.match(/(?:storyId\=)([0-9]+)/);
+      href.match(/(?:detail\/)([0-9]+)/) ||
+      href.match(/(?:issueId\=)([0-9]+)/) ||
+      href.match(/(?:storyId\=)([0-9]+)/);
     if (res) {
       return res[1];
     }
@@ -126,8 +126,8 @@ const getWorkItemIdFormUrl = async () => {
 
 export const Tab = () => {
   const [bindings, setBindings] = useState<any>([]);
-  const [project_key,setProjectKey]=useState<string|undefined>()
-  const [workitem_id,setWorkItemId] = useState<string>("")
+  const [project_key, setProjectKey] = useState<string | undefined>();
+  const [workitem_id, setWorkItemId] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [inited, setInited] = useState(false);
   //@ts-ignore
@@ -162,29 +162,32 @@ export const Tab = () => {
 
   useEffect(() => {
     (async () => {
-      const context = await window.JSSDK.Context.load()
-      setProjectKey(context.mainSpace?.id)
+      const context = await window.JSSDK.Context.load();
+      setProjectKey(context.mainSpace?.id);
       setLoading(true);
-      const workItemId=await getWorkItemIdFormUrl()
-      setWorkItemId(workItemId)
-      getBindings({project_key:context.mainSpace?.id, workitem_id:workItemId})
-          .then((res) => {
-            if (res.data) {
-              setBindings(res.data);
-            }
-          })
-          //.finally()改成.then()
-          .then(() => {
-            setInited(true);
-            setLoading(false);
-          });
-    })()
+      const workItemId = await getWorkItemIdFormUrl();
+      setWorkItemId(workItemId);
+      getBindings({
+        project_key: context.mainSpace?.id,
+        workitem_id: workItemId,
+      })
+        .then((res) => {
+          if (res.data) {
+            setBindings(res.data);
+          }
+        })
+        //.finally()改成.then()
+        .then(() => {
+          setInited(true);
+          setLoading(false);
+        });
+    })();
   }, []);
 
-  useEffect(()=>{
-    setProjectKey(project_key)
-    setWorkItemId(workitem_id)
-  },[project_key,workitem_id])
+  useEffect(() => {
+    setProjectKey(project_key);
+    setWorkItemId(workitem_id);
+  }, [project_key, workitem_id]);
 
   useEffect(() => {
     if (inited) {
@@ -242,7 +245,6 @@ export const Tab = () => {
       render: (val, record, index) => renderUsers(val),
     },
     {
-      // title: bruteTranslate('reviewer'),
       title: 'reviewer',
       dataIndex: 'reviewers',
       width: 139,
@@ -384,7 +386,7 @@ export const Tab = () => {
         <div className='meego-plugin-gitlab-tab'>
           {inited && (
             <Collapse
-                className={"collapse"}
+              className={'collapse'}
               expandIconPosition='left'
               defaultActiveKey={defaultActiveKey}
               expandIcon={<IconTreeTriangleRight size={'extra-small'} />}

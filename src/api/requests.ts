@@ -34,7 +34,7 @@ request.interceptors.request.use(
     if (config.url?.startsWith('/')) {
       config.url = baseUrl + config.url;
     }
-    config.headers['X-TOKEN'] = token;
+    config.headers['authorization'] = token;
 
     return config;
   },
