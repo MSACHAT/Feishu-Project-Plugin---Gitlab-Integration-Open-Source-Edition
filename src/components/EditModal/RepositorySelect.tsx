@@ -127,7 +127,7 @@ const renderOptions = (options, value, onChange, setRepo) => {
           //TODO:这边用了Tag来代替MeegoDisplayText，不确定行不行，记得检查
           <Tag
               className={"repo-option"}
-              style={{alignItems:"center",backgroundColor:"rgb(255, 255, 255)",height:"4vh",gap:"0.5vw"}}
+              // style={{display:"inline-flex",alignItems:"center",backgroundColor:"rgb(255, 255, 255)",height:"4vh",gap:"0.5vw"}}
             onClick={() => {
               let res: string[] | undefined = [...(value || [])];
               if (selected) {
@@ -151,9 +151,8 @@ const renderOptions = (options, value, onChange, setRepo) => {
               deleteRepos(e, index);
             }}
           >
-            <Row style={{display:"flex",justifyContent:"space-evenly",alignItems:"center",width:"100%"}}>
-              <Col span={10}>{selected && <IconTick size={'small'} />}</Col>
-              <Col span={20} style={{width:"100%"}}>{v}</Col>
+            <Row>
+              <Col span={20} style={{width:"100%"}}>{selected && <IconTick size={'small'} />}{v}</Col>
             </Row>
           </Tag>
         );

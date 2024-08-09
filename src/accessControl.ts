@@ -38,7 +38,7 @@ async function getToken(code: string) {
 
 
 async function checkLogin() {
-  const token = await sdk.storage.getItem(`${APP_KEY}_token`);
+  // const token = await sdk.storage.getItem(`${APP_KEY}_token`);
   const expireTimeStr = await sdk.storage.getItem(`${APP_KEY}_expire_time`);
 
   const currentTime = Date.now();
