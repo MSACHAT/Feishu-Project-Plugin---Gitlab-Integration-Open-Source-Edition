@@ -6,7 +6,7 @@ const sdk = window.JSSDK;
 async function getToken(code: string) {
   try {
     const res = await authAgree(code) as unknown as { token: string, expire_time: number };
-    console.log("RES", res)
+
     if (!res) {
 
       return Promise.reject(new Error('Invalid response from authAgree'));
@@ -43,14 +43,10 @@ async function checkLogin() {
 
   const currentTime = Date.now();
 
-
-  if (!token || !expireTimeStr) {
-    return false;
-  }
-
   const expireTime = Number(expireTimeStr);
-  return !(isNaN(expireTime) || (expireTime - currentTime) <= 0);
-
+  const isValidExpireTime = !isNaN(expireTime);
+  const isNotExpired = (expireTime - currentTime) > 0;
+  return isValidExpireTime && isNotExpired;
 
 }
 
