@@ -4,8 +4,12 @@ import { APP_KEY } from "./constants";
 const sdk = window.JSSDK;
 
 async function getToken(code: string) {
+
+
   try {
     const res = await authAgree(code) as unknown as { token: string, expire_time: number };
+
+
 
     if (!res) {
 

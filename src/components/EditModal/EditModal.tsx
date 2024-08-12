@@ -25,6 +25,8 @@ import useSdkContext from '../../hooks/useSdkContext';
 const { Title: SemiTitle, Text } = Typography;
 
 const createParams = (workItem, values, eventList, nodes, spaceId) => {
+  console.warn(values);
+
   const [workItemId, tempId] = values.name;
   const { rules } = values;
   const selectWorkItem = workItem.find((item) => item.value === workItemId);
@@ -111,7 +113,7 @@ const renderHeader = (required) => (
 const Title = (props) => (
   <div
     style={{
-      width:"100%",
+      width: '100%',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -120,11 +122,15 @@ const Title = (props) => (
   >
     <div>{'GitLab 关联'}</div>
     <Text
-        style={{display:"flex",alignItems:"center",color:"rgb(57, 79, 226)"}}
-        className={"check-help-document"}
-        onClick={()=>{
-          window.JSSDK.navigation.open(props.href)
-        }}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        color: 'rgb(57, 79, 226)',
+      }}
+      className={'check-help-document'}
+      onClick={() => {
+        window.JSSDK.navigation.open(props.href);
+      }}
       icon={<IconLink />}
       underline
     >
@@ -160,6 +166,7 @@ const EditModal: FC<ModalReactProps> = (props) => {
     if (isEmpty(errorInfo)) {
       setModalBtnLoading(true);
       const values = formApi.getValues();
+      console.warn(values, 111111111111111111111111111111111111);
       const rules: any = createParams(
         workItem,
         values,
