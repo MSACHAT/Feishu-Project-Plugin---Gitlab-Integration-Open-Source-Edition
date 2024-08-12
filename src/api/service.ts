@@ -63,7 +63,7 @@ export const fetchAddRepo = (project_key: string, repositories: Array<IRepositor
 
 // 删除仓库
 export const fetchDelRepo = (project_key: string, repoName: string) =>
-  request.delete<unknown, ResponseWrap<string>>(` /config/${project_key}/repository`, {
+  request.delete<unknown, ResponseWrap<string>>(`/config/${project_key}/repository`, {
     params: { path_with_namespace: repoName },
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"

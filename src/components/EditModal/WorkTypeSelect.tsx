@@ -1,3 +1,4 @@
+
 import React, {
   type FC,
   useCallback,
@@ -15,8 +16,8 @@ import {
   fetchFlowNodes,
   fetchTemplateList,
 } from '../../api/service';
-import {type IWorkItem, TemplateInfo} from '../../api/types';
 import type { FormApi } from '@douyinfe/semi-ui/lib/es/form';
+import {IWorkItem} from "../../api/types";
 
 type Props = Omit<AsyncFormCascaderProps, 'fetchData'> & {
   spaceId: string;
@@ -46,36 +47,34 @@ const WorkTypeSelect: FC<Props> = (props) => {
     }
     const { enabledWorkObjectList } = await getSpace(spaceId);
     const options: Array<IWorkItem> = await Promise.all(
-      enabledWorkObjectList.map((wo) =>
-        getFlowMode({ spaceId, workObjectId: wo.id }).then((mode) => ({
-          label: wo.name,
-          value: wo.id,
-          flowMode: mode,
-        }))
-      )
+        enabledWorkObjectList.map((wo) =>
+            getFlowMode({ spaceId, workObjectId: wo.id }).then((mode) => ({
+              label: wo.name,
+              value: wo.id,
+              flowMode: mode,
+            }))
+        )
     );
     const tempList = await Promise.all(
-      enabledWorkObjectList.map((wo) =>
-        fetchTemplateList(spaceId, wo.id)
-          .then((res) => res.data)
-          .catch(() => [])
-      )
-    )as unknown as TemplateInfo[][];
-    console.log(tempList)
+        enabledWorkObjectList.map((wo) =>
+            fetchTemplateList(spaceId, wo.id)
+                .then((res) => res.data)
+                .catch(() => [])
+        )
+    );
     enabledWorkObjectList.map(async (workObj, workObjIndex) => {
-      console.log(workObjIndex)
       const children: any = [];
       tempList[workObjIndex].map(
-        (temp) =>
-          // 此处过滤掉已经禁用的模版 后期JSSDK支持的话就用JSSDK
-          temp.is_disabled === 2 &&
-          children.push({
-            ...temp,
-            disabled:
-              !!templateList.find((t) => t === temp.template_id) || false,
-            label: temp.template_name,
-            value: temp.template_id,
-          })
+          (temp) =>
+              // 此处过滤掉已经禁用的模版 后期JSSDK支持的话就用JSSDK
+              temp.is_disabled === 2 &&
+              children.push({
+                ...temp,
+                disabled:
+                    !!templateList.find((t) => t === temp.template_id) || false,
+                label: temp.template_name,
+                value: temp.template_id,
+              })
       );
       options[workObjIndex].children = children;
     });
@@ -103,9 +102,9 @@ const WorkTypeSelect: FC<Props> = (props) => {
     setModalLoading(true);
     const nodes = await fetchFlowNodes(spaceId, id).then((res) => {
       const data =
-        res.data.state_flow_confs && res.data.state_flow_confs.length
-          ? res.data.state_flow_confs
-          : res.data.workflow_confs;
+          res.data.state_flow_confs && res.data.state_flow_confs.length
+              ? res.data.state_flow_confs
+              : res.data.workflow_confs;
       return data.map((conf) => ({
         label: conf.name,
         value: conf.state_key,
@@ -136,14 +135,16 @@ const WorkTypeSelect: FC<Props> = (props) => {
   }, [isEdit, editInfo]);
 
   return (
-    <AsyncFormCascader
-      {...rest}
-      disabled={isEdit}
-      onChange={handlerChange}
-      fetchData={fetchOptions}
-      style={{ width: '100%' }}
-    />
+      <AsyncFormCascader
+          {...rest}
+          disabled={isEdit}
+          onChange={handlerChange}
+          fetchData={fetchOptions}
+          style={{ width: '100%' }}
+      />
   );
 };
 
 export default WorkTypeSelect;
+
+    

@@ -31,7 +31,7 @@ const createParams = (workItem, values, eventList, nodes, spaceId) => {
   const { rules } = values;
   const selectWorkItem = workItem.find((item) => item.value === workItemId);
   const selectTemp = selectWorkItem.children.find(
-    (item) => item.value === tempId
+      (item) => item.value === tempId
   );
   const prefix = 'GitLab 关联';
   const title = `${prefix} ${selectWorkItem.label} -> ${selectTemp.label}`;
@@ -53,8 +53,8 @@ const createParams = (workItem, values, eventList, nodes, spaceId) => {
     const nodesValue = rule.nodes;
     const control_level = !rule.must ? 2 : 1;
     const targets = rule.nodes
-      .map((item) => nodes.find((node) => item === node.value))
-      ?.map((target) => ({ key: target.value, name: target.label }));
+        .map((item) => nodes.find((node) => item === node.value))
+        ?.map((target) => ({ key: target.value, name: target.label }));
     const messages = {
       source: '',
       target: '',
