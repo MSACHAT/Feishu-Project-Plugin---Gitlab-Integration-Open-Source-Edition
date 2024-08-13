@@ -32,10 +32,15 @@ export const Config = () => {
   //@ts-ignore
   const [internal, setInternal] = useState(false);
 
-  const fetchData = useCallback(() => {
+  // @ts-ignore
+    const fetchData = useCallback(() => {
       if(projectKey) {
-          fetchConfigList(projectKey).then((res) =>
-              res?.data && res.data.length ? {rules: res?.data} : {}
+          return fetchConfigList(projectKey).then((res) =>
+              // console.log(res)
+                  // return res?.data && res.data.length ? {rules: res?.data} : {}
+              // @ts-ignore
+              ({rules: res.data})
+
           ).catch(
               err=>console.log(err)
           );

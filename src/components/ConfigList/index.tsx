@@ -12,7 +12,7 @@ import {
   Layout,
   Button,
   List,
-  Typography
+  Typography, Toast
 } from '@douyinfe/semi-ui';
 import { type PaginationProps } from '@douyinfe/semi-ui/lib/es/pagination';
 import { type ButtonProps } from '@douyinfe/semi-ui/lib/es/button';
@@ -63,7 +63,7 @@ function ConfigList<T extends Record<string, any>>(
           })
     }
     catch{
-
+      Toast.info("请稍等，加载中")
     }
     finally {
       setLoading(false);
@@ -97,7 +97,6 @@ function ConfigList<T extends Record<string, any>>(
             <Empty
               style={{ marginTop: '10vh' }}
               // size='large'
-              // type={'noData'}
               title={'暂无数据'}
             >
               <Text>

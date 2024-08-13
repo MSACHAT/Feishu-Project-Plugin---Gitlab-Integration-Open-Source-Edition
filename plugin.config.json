@@ -5,7 +5,7 @@
   "resources": [
     {
       "id": "tab_",
-      "entry": "./src/features/demo/index.tsx"
+      "entry": "./src/features/Tab/entry.tsx"
     },
     {
       "id": "integration_",

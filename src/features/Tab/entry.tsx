@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import {Tab} from "../Tab";
+import {Tab} from "./index";
 
 const container = document.createElement('div');
 container.id = 'app';

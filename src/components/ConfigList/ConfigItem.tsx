@@ -44,6 +44,7 @@ const ConfigItem: FC<
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
 
+  console.log("REST",rest)
   const removeConfig = (id: string) => {
     onRemove(id);
   };
