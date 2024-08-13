@@ -12,9 +12,10 @@ export default function CopyBtn() {
       const context = await window.JSSDK.Context.load()
       const spaceId = context.mainSpace?.id
       fetchSignature(spaceId||"").then((res) => {
-        const result=res as unknown as {signature:string}
-        if (result.signature) {
-          setSignature(result.signature);
+        //TODO:流氓类型改掉
+        const result=res as unknown as {callback:string}
+        if (result.callback) {
+          setSignature(result.callback);
         }
       });
     })()
