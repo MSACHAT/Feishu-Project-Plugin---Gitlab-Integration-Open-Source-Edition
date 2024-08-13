@@ -13,7 +13,7 @@ const EventSelect: FC<Props> = (props) => {
     async () =>
       eventList.map((item) => ({
         label: item.name,
-        value: item.key,
+        value: item.typeKey,
       })),
     [eventList],
   );

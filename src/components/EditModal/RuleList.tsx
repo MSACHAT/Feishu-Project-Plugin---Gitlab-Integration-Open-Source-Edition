@@ -54,7 +54,8 @@ const RuleList: FC<IProps> = () => {
                         style={{ width: '100%' }}
                         rules={[
                           {
-                            required: true,
+                            //TODO:暂时写成false，记得调试完改回true
+                            required: false,
                             message: '请选择 GitLab 事件',
                           },
                         ]}

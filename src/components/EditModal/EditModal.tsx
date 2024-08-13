@@ -25,6 +25,7 @@ import useSdkContext from '../../hooks/useSdkContext';
 const { Title: SemiTitle, Text } = Typography;
 
 const createParams = (workItem, values, eventList, nodes, spaceId) => {
+  //TODO:eventList和nodes都正常
   const [workItemId, tempId] = values.name;
   const { rules } = values;
   const selectWorkItem = workItem.find((item) => item.value === workItemId);
@@ -48,6 +49,8 @@ const createParams = (workItem, values, eventList, nodes, spaceId) => {
       path_with_namespace: repo,
     }));
     const source = eventList.find((item) => item.key === rule.event);
+    console.log("RULES",rule)
+    //TODO:source没有是因为rule.event为空
     const nodesValue = rule.nodes;
     const control_level = !rule.must ? 2 : 1;
     const targets = rule.nodes
@@ -225,7 +228,8 @@ const EditModal: FC<ModalReactProps> = (props) => {
       <Spin tip='' spinning={modalLoading}>
         <Form
           ref={formRef}
-          render={({ values, formApi }) => (
+          render={({ values, formApi }) => {
+            return(
             <>
               <Row>
                 <Col span={10}>
@@ -251,8 +255,10 @@ const EditModal: FC<ModalReactProps> = (props) => {
                 <RuleList values={values} />
               </Card>
             </>
-          )}
-        ></Form>
+            )
+          }}
+        >
+        </Form>
       </Spin>
     </Modal>
   );

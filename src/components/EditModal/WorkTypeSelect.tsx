@@ -86,7 +86,9 @@ const WorkTypeSelect: FC<Props> = (props) => {
   const handlerChange = async ([wId, id]) => {
     setValue(wId);
     // 切换工作项时如果节点或者github事件有值的话需要清空
+    //TODO:targets和source是在这里获取的
     const values = formApi.getValues();
+    console.log("VALUES. RULES",values.rules)
     if (values.rules && values.rules.length > 0 && !isEdit) {
       values.rules.map((item, index) => {
         formApi.setValue(`rules[${index}]event`, '');
@@ -129,6 +131,8 @@ const WorkTypeSelect: FC<Props> = (props) => {
   }, [value, workItem]);
   // 修改时获取已选工作项的 event事件以及模版节点
   useEffect(() => {
+    console.log("ISEDIT",isEdit)
+    console.log("EDITINFO",editInfo)
     if (isEdit && editInfo) {
       handlerChange([editInfo.work_item_type.key, editInfo.template.id]);
     }

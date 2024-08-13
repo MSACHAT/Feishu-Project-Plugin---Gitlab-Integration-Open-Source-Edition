@@ -6,7 +6,6 @@ import React, {
 } from 'react';
 import { Form, Spin } from '@douyinfe/semi-ui';
 import type { CascaderData } from '@douyinfe/semi-ui/lib/es/cascader';
-const FormCascader = Form.Cascader;
 
 export type AsyncFormCascaderProps = ComponentProps<typeof Form.Cascader> & {
   fetchData: () => Promise<CascaderData[]>;
@@ -17,24 +16,21 @@ const AsyncFormCascader: FC<AsyncFormCascaderProps> = (props) => {
   const [options, setOptions] = useState<CascaderData[]>();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
+    console.log(rest)
     setLoading(true);
-    setOptions(undefined);
-    const fetchDataAndSetOptions = async () => {
+    setOptions(undefined)
       try {
-        const data = await fetchData();
-        setOptions(data);
+     fetchData().then(setOptions);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
-    };
 
-    fetchDataAndSetOptions();
   }, [fetchData]);
 
   return (
-    <FormCascader
+    <Form.Cascader
       {...rest}
       emptyContent={
         loading ? <Spin style={{ width: 80 }} tip='' /> : <div>暂无数据</div>
