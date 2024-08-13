@@ -42,17 +42,9 @@ export const fetchConfigList = (project_key: string) =>
     .then(res => res.data);
 
 // 获取签名用于配置webhook
-export const fetchSignature = (project_key: string) =>
+export const fetchCallbackUrl = (project_key: string) =>
   request
-    .get<
-      unknown,
-      ResponseWrap<{
-
-        data: {
-          signature: string;
-        };
-      }>
-    >(`/config/${project_key}/setting`)
+    .get(`/config/${project_key}/setting`)
     .then(res => res.data);
 
 // 添加仓库
@@ -105,9 +97,11 @@ export const getCommonSetting = (project_key: string) =>
   request.get<unknown, ResponseWrap<ICommonSetting>>(`/config/${project_key}/config`);
 
 export function getBindings({ project_key, workitem_id }) {
-    return request.get(`/binding/${project_key}/${workitem_id}/binding`,{headers:{
-        "Content-Type":"application/x-www-form-urlencoded"
-        }});
+  return request.get(`/binding/${project_key}/${workitem_id}/binding`, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  });
 }
 
 export function deleteBindings({ project_key, workitem_id, id }) {
@@ -127,6 +121,6 @@ export function enableRule(id, enable) {
 
 // 删除规则
 export const fetchDelRule = (id: string) =>
-    request.delete<unknown, ResponseWrap<any>>(
-        `/config/${id}/config`
-    );
+  request.delete<unknown, ResponseWrap<any>>(
+    `/config/${id}/config`
+  );
