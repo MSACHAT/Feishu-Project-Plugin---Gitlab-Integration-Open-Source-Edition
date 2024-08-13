@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { IconCopy } from '@douyinfe/semi-icons';
 import { Tooltip, Button, Toast } from '@douyinfe/semi-ui';
-import { fetchSignature } from '../../api/service';
+import { fetchCallbackUrl } from '../../api/service';
 import { copyText } from '../../utils';
-import { requestHost } from '../../constants';
 
 export default function CopyBtn() {
   const [signature, setSignature] = useState<string | null>(null);
+
   useEffect(() => {
     (async () => {
-      const context = await window.JSSDK.Context.load()
-      const spaceId = context.mainSpace?.id
-      fetchSignature(spaceId||"").then((res) => {
-        const result=res as unknown as {signature:string}
-        if (result.signature) {
-          setSignature(result.signature);
+      try {
+        const context = await window.JSSDK.Context.load();
+        const spaceId = context.mainSpace?.id;
+        console.log('spaceId', spaceId);
+
+        const res = await fetchCallbackUrl(spaceId || '');
+        const result = res as unknown as { callback: string };
+        if (result.callback) {
+          setSignature(result.callback);
+        } else {
+          Toast.error({ content: '获取签名失败' });
         }
-      });
-    })()
+      } catch (error) {
+        console.error('Error fetching callback URL:', error);
+        Toast.error({ content: '获取回调 URL 失败' });
+      }
+    })();
   }, []);
 
   return (
@@ -30,11 +38,15 @@ export default function CopyBtn() {
         icon={<IconCopy style={{ fill: 'white' }} />}
         theme='solid'
         onClick={async () => {
+          console.error('signature', signature);
           if (signature) {
-            await copyText(requestHost + `/webhook?=${signature}`);
+            try {
+              await copyText(signature);
+              Toast.success({ content: '复制成功' });
+            } catch (error) {
+              Toast.error({ content: '复制失败' });
+            }
           } else {
-            setSignature(null);
-
             Toast.error({ content: '获取 token 失败' });
           }
         }}
