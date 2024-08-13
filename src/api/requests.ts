@@ -27,10 +27,12 @@ const baseUrl = requestHost;
 request.interceptors.request.use(
 
   async function (config) {
+
     // 在请求发送之前做一些处理
     // 添加请求头信息
     await isLogin();
     const token = await sdk.storage.getItem(`${APP_KEY}_token`);
+    console.warn(token)
     if (config.url?.startsWith('/')) {
       config.url = baseUrl + config.url;
     }

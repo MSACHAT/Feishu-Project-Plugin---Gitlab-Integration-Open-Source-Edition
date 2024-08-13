@@ -57,7 +57,7 @@ axios.interceptors.response.use(
 
 export async function authAgree(code: string) {
   try {
-    const res = await axios.post<ResWrapper<AuthRes>>(
+    const res = await axios.post(
       '/login',
       {
         code,
