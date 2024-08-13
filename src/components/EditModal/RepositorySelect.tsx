@@ -127,7 +127,7 @@ const renderOptions = (options, value, onChange, setRepo) => {
           //TODO:这边用了Tag来代替MeegoDisplayText，不确定行不行，记得检查
           <Tag
               className={"repo-option"}
-              // style={{display:"inline-flex",alignItems:"center",backgroundColor:"rgb(255, 255, 255)",height:"4vh",gap:"0.5vw"}}
+              style={{display:"flex",alignItems:"center",backgroundColor:"rgb(255, 255, 255)",height:"4vh",gap:"0.5vw"}}
             onClick={() => {
               let res: string[] | undefined = [...(value || [])];
               if (selected) {
