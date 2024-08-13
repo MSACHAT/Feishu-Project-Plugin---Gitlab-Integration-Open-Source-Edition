@@ -6,25 +6,17 @@ import { copyText } from '../../utils';
 
 export default function CopyBtn() {
   const [signature, setSignature] = useState<string | null>(null);
-
   useEffect(() => {
     (async () => {
-      try {
-        const context = await window.JSSDK.Context.load();
-        const spaceId = context.mainSpace?.id;
-        console.log('spaceId', spaceId);
-
-        const res = await fetchCallbackUrl(spaceId || '');
+      const context = await window.JSSDK.Context.load();
+      const spaceId = context.mainSpace?.id;
+      fetchCallbackUrl(spaceId || '').then((res) => {
+        //TODO:流氓类型改掉
         const result = res as unknown as { callback: string };
         if (result.callback) {
           setSignature(result.callback);
-        } else {
-          Toast.error({ content: '获取签名失败' });
         }
-      } catch (error) {
-        console.error('Error fetching callback URL:', error);
-        Toast.error({ content: '获取回调 URL 失败' });
-      }
+      });
     })();
   }, []);
 
@@ -38,15 +30,11 @@ export default function CopyBtn() {
         icon={<IconCopy style={{ fill: 'white' }} />}
         theme='solid'
         onClick={async () => {
-          console.error('signature', signature);
           if (signature) {
-            try {
-              await copyText(signature);
-              Toast.success({ content: '复制成功' });
-            } catch (error) {
-              Toast.error({ content: '复制失败' });
-            }
+            await copyText(signature);
           } else {
+            setSignature(null);
+
             Toast.error({ content: '获取 token 失败' });
           }
         }}

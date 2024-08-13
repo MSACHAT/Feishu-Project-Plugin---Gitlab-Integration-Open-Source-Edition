@@ -5,27 +5,27 @@ const sdk = window.JSSDK;
 
 async function getToken(code: string) {
   try {
-    // const res = await authAgree(code) as unknown as { token: string, expire_time: number };
-    //
-    // if (!res) {
-    //
-    //   return Promise.reject(new Error('Invalid response from authAgree'));
-    // }
-    // const { token, expire_time } = res;
-    //
-    // if (!token || !expire_time) {
-    //
-    //   return Promise.reject(new Error('Token or expireTime is missing'));
-    //
-    // }
-    // const currentTime = Date.now();
-    //
-    //
-    //
-    // const adjustedExpireTime = currentTime + (7200 * 1000) - 1 * 60 * 1000;
-    //
-    // await sdk.storage.setItem(`${APP_KEY}_token`, token);
-    // await sdk.storage.setItem(`${APP_KEY}_expire_time`, adjustedExpireTime.toString());
+    const res = await authAgree(code) as unknown as { token: string, expire_time: number };
+
+    if (!res) {
+
+      return Promise.reject(new Error('Invalid response from authAgree'));
+    }
+    const { token, expire_time } = res;
+
+    if (!token || !expire_time) {
+
+      return Promise.reject(new Error('Token or expireTime is missing'));
+
+    }
+    const currentTime = Date.now();
+
+
+
+    const adjustedExpireTime = currentTime + (7200 * 1000) - 1 * 60 * 1000;
+
+    await sdk.storage.setItem(`${APP_KEY}_token`, token);
+    await sdk.storage.setItem(`${APP_KEY}_expire_time`, adjustedExpireTime.toString());
 
     return true
   } catch (error) {
