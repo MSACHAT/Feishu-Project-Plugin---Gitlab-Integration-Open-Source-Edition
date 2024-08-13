@@ -62,6 +62,7 @@ function ConfigList<T extends Record<string, any>>(
             setList(rules ?? []);
           })
     }
+    //TODO:第一次拿不到数据，第二次才行，拿不到数据那次给用户弹窗来提示，这样解决不是很好，后面改
     catch{
       Toast.info("请稍等，加载中")
     }
