@@ -10,6 +10,7 @@ export async function copyText(text: string) {
     sdk.toast.success('复制成功');
 
   } catch (error) {
+
     if (error.name === OutOfLimitError.name) {
       sdk.toast.error(error.originMessage);
     } else {
