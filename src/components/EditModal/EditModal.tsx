@@ -48,8 +48,10 @@ const createParams = (workItem, values, eventList, nodes, spaceId) => {
     const repositories = rule.repo.map((repo) => ({
       path_with_namespace: repo,
     }));
-    const source = eventList.find((item) => item.key === rule.event);
+    // const source = eventList.find((item) => item.key === rule.event);
     console.log("RULES",rule)
+    //TODO:鉴于现在只支持merge事件，所以直接把source设置成第一条
+    const source=eventList[0]
     //TODO:source没有是因为rule.event为空
     const nodesValue = rule.nodes;
     const control_level = !rule.must ? 2 : 1;
